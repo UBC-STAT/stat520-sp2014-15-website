@@ -40,7 +40,7 @@ The editors should complete these tasks within 1 week of the lecture. This will 
 
 **The editing process:** 
 
-- On the week that you will be scribing, on the day of the lecture (or before) send in a email to Sohrab your github account, he will give you access to the website github, available at this [address](https://github.com/alexandrebouchard/stochastic-process-course). 
+- On the week that you will be scribing, on the day of the lecture (or before) send in a email to Sohrab your github account, he will give you access to the website github, available at this [address](https://github.com/UBC-Stat-ML/stat520-sp2014-15-website). 
 - The files corresponding to the lecture notes are available in ``_posts/``. If you have not used git before, you can edit the file directly from the github website (click on a file, and then on the ``Edit`` button), but we also encourage you to learn using git, either with a graphical interface (SourceTree or Github's), or via command line (many available via google, for example [there](http://rogerdudler.github.io/git-guide/)). 
 - Please try as much as possible to edit only the file corresponding your lecture to avoid too many merge conflicts. 
 - Note also that some changes might be pushed automatically to the website, so make sure to push commit to server only if you are sure the change is good (especially relevant if you are using the git server directly, and this is why we strongly recommend to use your own local git and then push from it).
@@ -56,5 +56,7 @@ The course project involves independent work on a topic of your choice, with the
 **Textbook:** I recommend [C. Robert's "The Bayesian Choice"](http://www.amazon.ca/Bayesian-Choice-Decision-Theoretic-Computational-Implementation/dp/0387715983). Other optional references will be posted at the bottom of the lecture note files.
 
 **Office hours:** TBA
+
+**Short URL for this page:** [http://tinyurl.com/redferret](http://tinyurl.com/redferret)
 
 **Acknowledgement:** computing supported by an AWS in Education Grant award.

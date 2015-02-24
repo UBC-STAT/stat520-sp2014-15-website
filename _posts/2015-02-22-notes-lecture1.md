@@ -6,14 +6,14 @@ category: 'Lecture'
 
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;
 
-
-
+Based on: lecture 3 from last year.
 
 ### Overview of some useful concepts from Bayesian statistics
 
 Consider the following generic statistical problem: 
 
-- we observe $x \in \Xscr$, we have a model of how this observation came to be in terms of some unknown quantities $z \in \Zscr$, 
+- we observe $x \in \Xscr$, 
+- we have a model of how this observation came to be in terms of some unknown quantities $z \in \Zscr$, 
 - and we want to make some decision (for example, reconstructing some of the unknown quantities, or forecasting future observations, etc). 
 
 More generally, we want to devise a decision-making strategy, which we formalize as an **estimator**: a function of the observation, $\delta(x)$. 
@@ -35,9 +35,13 @@ In full generality, approaching a problem in a Bayesian way consists of:
   - A **goal:** specified by a set of **actions** $\Ascr$ (each action $a$ could be predictions, a decision, etc), together with a **loss function** $L(a, z)$, which specifies a cost incurred for picking action $a$ when the true state of the world is $z$. An important example, when $\Ascr$ coincides with the space of realization of $Z$, is $L(z', z) = (z - z')^2$, the squared loss.
 2. selecting an estimator $\delta$ by minimizing the **integrated risk**, $\E[L(\delta(X), Z)]$.
 
-Solving an optimization problem over a space of estimators seems quite abstract and hard to implement. Fortunately, it is possible to rewrite this optimization problem over the space of actions $\Ascr$. In other words, there is one general recipe for solving the above minimization problem: 
+**Example where $\Ascr$ is different from the space of realization of $Z$?**
 
-**Proposition:** The estimator $\delta^\*$, defined with the equation below, minimizes the integrated risk:
+**Example from assignment 1.** 
+
+**Discussion on the optimization in bullet point 2.** Solving an optimization problem over a space of estimators seems quite abstract and hard to implement. Fortunately, it is possible to rewrite this optimization problem over the space of actions $\Ascr$. In other words, there is one general recipe for solving the above minimization problem: 
+
+**Proposition:** The estimator $\delta^\*$, defined by the equation below, minimizes the integrated risk (in bullet point 2):
 \\begin{eqnarray}\label{eq:bayes}
 \delta^*(X) = \argmin \\{ \E[L(a, Z) | X] : a \in \Ascr \\}
 \\end{eqnarray} 
@@ -50,19 +54,21 @@ Moreover, if the loss is strictly convex, the Bayes estimator is unique. See Rob
 
 However, the computation required to implement this recipe may be considerable. This explains why computational statistics plays a large role in Bayesian statistics and in this course. 
 
+**Example from assignment 1, continued.** 
+
 ---
 
-**Optional exercise:** If you have not seen this material before, show that in the special case where $L$ is the squared loss, one can compute a simple expression for the minimizer, which is simply $\delta^*(X) = \E[Z|X]$. 
+**Optional exercise:** If you have not seen this material before, show that in the special case where $L$ is the squared loss on $L(a, z) = (z - a)^2$, one can compute a simple expression for the minimizer, which is simply $\delta^*(X) = \E[Z|X]$. 
 
 For other losses finding such an expression may or may not be possible. We will talk about approximation strategies for the latter case later in this course. 
 
 ---
 
-Note that other criteria certainly exist for selecting estimators, in particular frequentist criteria. Some of these criteria, such as [admissibility](http://en.wikipedia.org/wiki/Admissible_decision_rule), do not create a total order on the estimator (even under strictly convex losses), they only provide a partial order. Moreover, since the Bayes estimator can be shown to be non-suboptimal under this criterion as well (in other words, admissible)
+Note that other criteria certainly exist for selecting estimators, in particular frequentist criteria. Some of these criteria, such as [admissibility](http://en.wikipedia.org/wiki/Admissible_decision_rule), do not create a total order on the estimator (even under strictly convex losses), they only provide a partial order. Moreover, since the Bayes estimator can be shown to be non-suboptimal under this criterion as well (in other words, admissible).
 
 Of course, these nice properties assume that the model is a true representation of the world (a **well-specified model**), a condition that is almost always false. 
 
-This provides a motivation for creating richer models that are more faithful to reality. In particular, models of adaptive complexity, that become progressively complex as more data become available. These models are called **non-parametric** (more formal definition below). As alluded last lecture, stochastic processes provide a formidable tool for constructing these non-parametric models.
+This provides a motivation for creating richer models that are more faithful to reality. In particular, models of adaptive complexity, that become progressively complex as more data become available. These models are called **non-parametric** (more formal definition below).
 
 #### Well-specified Bayesian models exist, but can force us to be non-parametric
 
@@ -76,64 +82,47 @@ Let us make the discussion on de Finetti from last week more formal.
 
 **Extension:** A countably infinite sequence of random variable $(X\_1, X\_2, \dots)$ is **(infinitely) exchangeable** if all finite sub-sequence $(X\_{k\_1}, \dots, X\_{k\_n})$ are exchangeable.
 
----
-
-**Example:**  <img src="{{ site.url }}/images/polya-urn.jpg" alt="Drawing" style="width: 200px; float: right"/>
-
-In the first exercise, you will show that any finite or infinite list of tokens sampled from a CRP is exchangeable. Here is a consequence: 
-
-- pick $G\_0$ to be a discrete measure on two colors (red and blue): 
-    - red with probability $2/3$, and 
-    - blue with probability $1/3$ (we assumed last time that $G\_0$ was non-atomic, but the theory extends easily to atomic $G\_0$, the only difference is that two different tables can pick the same dish type). 
-- Interpretation as an urn model? 
-
-This means that the probability of observing the sequence of colors
-
-<font color="red">red</font>, <font color="red">red</font>, <font color="red">red</font>, <font color="red">red</font>, <font color="red">red</font>, <font color="red">red</font>, <font color="blue">blue</font>, <font color="blue">blue</font>
-
-is the same as the probability of observing the sequence
-
-<font color="blue">blue</font>, <font color="blue">blue</font>, <font color="red">red</font> , <font color="red">red</font> , <font color="red">red</font> , <font color="red">red</font>, <font color="red">red</font>, <font color="red">red</font>
-
----
-
 **Theorem:** De Finetti ([simple version](http://www.math.kth.se/matstat/gru/Statistical%20inference/definetti.pdf)): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of **binary** random variables, $X\_i : \Omega' \to \\{0,1\\}$ then there exists a random variable $Z : \Omega' \to [0, 1]$ such that $X\_i | Z \sim \Bern(Z)$.
 
 In other words, if all we are modelling is a sequence of exchangeable binary random variables, we do not need a non-parametric model. On the other hand, if the $X\_i$ are real, the situation is different:
 
 **Theorem:** De Finetti (more general version, see [Kallenberg, 2005](http://www.springer.com/statistics/statistical+theory+and+methods/book/978-0-387-25115-8), Chapter 1.1): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of real-valued random variables, the there exists a random measure $G : \Omega' \to (\sa\_{\Omega} \to [0,1])$ such that $X\_i | G \sim G$.
 
-Note that this random measure $G$ is not necessarily Dirichlet-Process distributed. Here is a counter-example, the **Pitman-Yor process**, which has the same structure as the CRP, with the following amendments: 
-
-- We boost the probability of creating a new table by $T\_n \cdot d$, where:
-   - $T\_n$ is the current number of occupied tables (before seating a new customer)
-   - $d$ is a hyper-parameter called a **discount** such that $0 \le d < 1$ (note that we also gain some extra freedom on $\alpha\_0$, now it can be "slightly negative", namely $\alpha\_0 > -d$).
-- For each currently occupied table, we reduce the probability of joining that table by the constant $d$.
-
-Optional exercise: this is still exchangeable, yet for $d \neq 0$, this is not the marginal of a Dirichlet process (in other words, this does not have the distribution of a sample of a sampled Dirichlet process).
 
 #### Bayesian estimation in parametric families
 
-Many non-parametric models are built by composing a random number of parametric models (DP by themselves would be limited since it would predict duplicates in the observations, which we may not want). Therefore, it is worth spending some time on parametric models initially. This will help clarify the formal definition of parametric vs. non-parametric at the same time.
+Many non-parametric models are built by composing a random number of parametric models (DP by themselves would be limited since it would predict duplicates in the observations, which we may not want). Parametric models are also very useful by themselves, for example for computational tractability reasons. 
 
-Formally, a parametric Bayesian model contains two ingredients:
+In the simplest cases, a parametric Bayesian model contains two ingredients:
 
-1. A collection of densities over the observations $\Xscr$, indexed by the space of unknowns $\Zscr$. These densities are called **likelihoods**, $\Lscr = \\{\ell(x | z) : z\in\Zscr\\}$. The parametric assumption simply means that the collection is smoothly indexed by a subset of an Euclidean space, $\Zscr \subset \RR^k$ for some fixed integer $k$.
+1. A collection of densities over the observations $\Xscr$, indexed by the space of unknowns $\Zscr$. These densities are called **likelihoods**, $\Lscr = \\{\ell(x | z) : z\in\Zscr\\}$. The parametric assumption simply means that the collection is smoothly indexed by a subset of an Euclidean space, $\Zscr \subset \RR^d$ for some fixed integer $d$.
 2. A prior density $p$ on $Z$.<sub>Note: the random variables $X, Z$ are not necessarily continuous, so the densities $\ell$ and $p$ are defined with respect to some arbitrary (but fixed and known) reference measures. Since they do not play a central role in the theory, we will keep these reference measures anonymous, writing $\ud x, \ud z$ for integration with respect to these variables.</sub>
 
 ---
 
-**Example:** Consider a multinomial (categorical) likelihood model over three categories. This means that each individual observation $x\_i$ is a point from a finite set of $k = 3$ objects, and the full dataset is: $ x = (x\_1, \dots, x\_n), x\_i \in \\{\textrm{category 1, category 2, category 3}\\}$. The parameter consists of three numbers $z = (z\_1, z\_2, z\_3)$ that sum to one. This is a subset of $\\RR^3$, therefore this is a parametric model. The value of the likelihood is given by:
+**Example:** Consider a categorical likelihood model over two categories. This means that each individual observation $x\_i$ is a point from a finite set of $k = 2$ objects. Let us denote the dataset by: $ x = (x\_1, \dots, x\_n), x\_i \in \\{\textrm{category 1, category 2}\\}$. The parameter consists of two numbers $z = (z\_1, z\_2)$ that sum to one. This is a subset of $\\RR^2$, therefore this is a parametric model. The value of the likelihood is given by:
 
 \\begin{eqnarray}
-\ell(x | z) = z\_1^{n\_1(x)} z\_2^{n\_2(x)} z\_3^{n\_3(x)},
+\ell(x | z) = z\_1^{n\_1(x)} z\_2^{n\_2(x)},
 \\end{eqnarray}
 
-where $n\_k(z)$ returns the number of times category $k$ was picked among the $n$ observations $x= (x\_1, \dots, x\_n)$ (since the likelihood only depends on the function $n = (n\_1, n\_2, n\_3)$, we say that $n$ is a sufficient statistic). As we have discussed last week, a suitable prior on $z$ is given by picking a Dirichlet distribution,
-
+where $n\_k(z)$ returns the number of times category $k$ was picked among the $n$ observations $x= (x\_1, \dots, x\_n)$ (since the likelihood only depends on the function $n = (n\_1, n\_2)$, we say that $n(\cdot) = (n\_1(\cdot), n\_2(\cdot))$ is a sufficient statistic). A suitable prior on $z$ is given by picking a Dirichlet distribution, with a density proportional to: 
 \\begin{eqnarray}
-p(z) = z\_1^{\alpha\_1} z\_2^{\alpha\_2} z\_3^{\alpha\_3},
-\\end{eqnarray}
+p(z\_1, z\_2) \propto z\_1^{\alpha\_1 - 1} z\_2^{\alpha\_2 - 1},
+\\end{eqnarray}  
+
+<img src="{{ site.url }}/images/beta.jpg" alt="Drawing" style="width: 400px; display:block;margin:auto;text-align:center;"/>
+
+where: 
+
+- $\alpha\_1 > 0, \alpha\_2 > 0$ are fixed numbers (called hyper-parameters). 
+- The $-1$'s give us a simpler restrictions on the hyper-parameters required to ensure finite normalization of the above expression. 
+- The hyper-parameters are sometimes denoted $\alpha = \alpha\_1$ and $\beta = \alpha\_2$. 
+  - To encourage values of $z$ close to $1/2$, pick $\alpha = \beta = 2$. 
+  - To encourage this even more strongly, pick $\alpha = \beta = 20$. (and vice versa, one can take value close to zero to encourage realizations with one point mass larger than the other.)
+  - To encourage a ratio $r$ different that $1/2$, make $\alpha$ and $\beta$ grow at different rates, with $\alpha/(\alpha+\beta) = r$. 
+- A shortcut often used when there are two categories ($k = 2$) is to say that $z\_1$ is Beta distributed, $z\_1 \sim \textrm{Beta}(\alpha, \beta)$, and to set $z\_2 = 1 - z\_1$, which is completely equivalent to $(z\_1, z\_2) \sim \textrm{Dir}(\alpha, \beta)$.
+- An even more special case is when $\alpha = \beta = 1$, in which case $z\_1$ and $z\_2$ are uniform (but not independent, $z\_2 = 1 - z\_1$).
 
 ---
 
@@ -157,11 +146,11 @@ with the following normalization for the right-hand side:
 m(x) = \int p(z) \ell(x|z) \ud z.
 \\end{eqnarray}
 
-This normalization, denoted by $m(x)$, is called the **marginal likelihood** or **evidence**. If the observations $x$ are discrete, this corresponds to the probability of the observed dataset under the model (given the number of observations). For this reason, the evidence plays an important role in Bayesian model selection.
+This normalization, denoted by $m(x)$, is called the **marginal likelihood** or **evidence**. If the observations $x$ are discrete, this corresponds to the probability of the observed dataset under the model. For this reason, the evidence plays an important role in Bayesian model selection.
 
 The integrals in Equations~(\ref{eq:posterior}, \ref{eq:marginal}) constitute one of the main challenge in Bayesian inference. We will discuss two approaches to solve these integrals in this course. 
 
-- Approximating the integral via Monte Carlo methods (next week)
+- Approximating the integral via approximation methods (MCMC, SMC, variational, etc; more on that later).
 - Picking the prior and likelihood so that analytic computations are possible (described in the next section).
 
 #### Conjugacy in parametric families
@@ -182,21 +171,23 @@ But in order for the conjugate approach to be computationally feasible, we shoul
 
 **Example (continued):** the Dirichlet distributions with hyperparameters $h = \alpha$ are conjugate to the multinomial likelihood. Moreover, the Dirichlet-multinomial model has the two nice computational tractability properties listed above. 
 
-Recall that for any hyper-parameter vector $h = \alpha$, a distribution on the simplex proportional to $z\_1^{\alpha\_1} z\_2^{\alpha\_2} z\_3^{\alpha\_3}$ has a known normalization $N(\alpha)$, namely
+Recall that for any hyper-parameter vector $h = \alpha$, a distribution on the simplex proportional to $z\_1^{\alpha\_1-1} z\_2^{\alpha\_2-1}$ has a known normalization $N(\alpha)$, namely
 
 \\begin{eqnarray}\label{eq:dir-norm}
-p\_\alpha(z) & = & \frac{z\_1^{\alpha\_1} z\_2^{\alpha\_2} z\_3^{\alpha\_3}}{N(\alpha)} \\\\
-N(\alpha) & = & \frac{\Gamma(\alpha\_1) \Gamma(\alpha\_2) \Gamma(\alpha\_3)}{\Gamma(\alpha\_1 + \alpha\_2 + \alpha\_3)}.
+p\_\alpha(z) & = & \frac{z\_1^{\alpha\_1-1} z\_2^{\alpha\_2-1} }{N(\alpha)} \\\\
+N(\alpha) & = & \frac{\Gamma(\alpha\_1) \Gamma(\alpha\_2)}{\Gamma(\alpha\_1 + \alpha\_2)}.
 \\end{eqnarray}
 
 Now let us look at the form of the posterior (up to normalization):
 
 \\begin{eqnarray}\label{eq:dir-prop}
 p(z | x) & \propto & p\_\alpha(z) \ell(x | z) \\\\
-& \propto & z\_1^{n\_1(x) + \alpha\_1} z\_2^{n\_2(x) + \alpha\_2} z\_3^{n\_3(x) + \alpha\_3}.
+& \propto & z\_1^{n\_1(x) + \alpha\_1 - 1} z\_2^{n\_2(x) + \alpha\_2 - 1}.
 \\end{eqnarray}
 
 To conclude, we use the simple but extremely useful fact that if two densities are proportional (in this case, Equation~(\ref{eq:dir-norm}) and (\ref{eq:dir-prop})), then they are equal (up to null sets). By Equation~(\ref{eq:dir-norm}), we can therefore conclude that the hyper-parameters update is given by $u(x, \alpha) = \alpha + n(x)$.
+
+**Connect with first question of assignment 1.**
 
 ---
 
@@ -216,7 +207,7 @@ Since this is true for all $z$, we can pick an arbitrary $z\_0$, and evaluate ea
 Since conjugacy leads us to consider families of priors indexed by a hyper-parameter $h$, this begs the question of how to pick $h$. Note that both $m\_h(x)$ and $p\_h(z | x)$ implicitly depend on $h$. Here are some guidelines for approaching this question:
 
 1. One can maximize $m\_h(x)$ over $h$, an approach called **empirical Bayes**. Note however that this does not fit the Bayesian framework (despite its name).
-2. If the dataset is moderate to large, one can test a range of reasonable values for $h$ (a range obtained for example from discussion with a domain expert); if the risk of the action selected by the Bayes estimator is not affected (or not affected too much), one can side-step this issue and pick arbitrarily from the set of reasonable values.
+2. If the dataset is moderate to large, one can test a range of reasonable values for $h$ (a range obtained for example from discussion with a domain expert); if the action selected by the Bayes estimator is not affected (or not affected too much), one can side-step this issue and pick arbitrarily from the set of reasonable values.
 3. If it is an option, one can collect more data *from the same population*. Under regularity conditions, the effect of the prior can be decreased arbitrarily (this follows from the celebrated Bernstein-von Mises theorem, see van der Vaart, p.140).
 4. If we only have access to other datasets that are related (in the sense that they have the same type of latent space $\Zscr$), but potentially from different populations, we can still exploit them using a **hierarchical Bayesian** model, described next.
 
@@ -239,4 +230,4 @@ The cost of taking the hierarchical Bayes route is that it generally requires re
 
 **Robert, C. (2007) The Bayesian Choice.** An excellent textbook, especially for the theoretically foundations of Bayesian statistics. Also covers many practical topics. Most relevant to this course are chapters 2, 3.1-3.3, 4.1-4.2.
 
-**van der Vaart, A.W. (1998) Asymptotic Statistics.** Chapter 10 contains a formal treatment of the asymptotic properties of parametric Bayesian procedures. Note that a different treatment is needed for non-parametric Bayesian procedures. We will come back to this issue next week.
+**van der Vaart, A.W. (1998) Asymptotic Statistics.** Chapter 10 contains a formal treatment of the asymptotic properties of parametric Bayesian procedures. Note that a different treatment is needed for non-parametric Bayesian procedures. 

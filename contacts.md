@@ -21,4 +21,4 @@ Course Information
 **Email:** sohrab.salehi AT stat.ubc.ca
 </address>
 
-**Piazza:** For questions and discussions, enroll [here](https://piazza.com/ubc.ca/MISSING-URL)
+**Piazza:** For questions and discussions, enroll on Piazza (link TBA)
