@@ -1,0 +1,151 @@
+---
+layout: post
+title: "Lecture 2: Bayesian bootcamp, continued"
+category: 'Lecture'
+---
+
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;
+
+Based on: lecture 3 from last year.
+
+
+### More examples of losses
+
+#### An example of loss for predicting a real number: squared loss 
+
+If you have not seen this material before, show that in the special case where $L$ is the squared loss on $L(a, z) = (z - a)^2$, one can compute a simple expression for the minimizer, which is simply $\delta^*(X) = \E[Z|X]$. 
+
+For other losses finding such an expression may or may not be possible. We will talk about approximation strategies for the latter case later in this course. 
+
+#### An example of loss for predicting the next point
+
+In the case of density estimation, if the task is to reconstruct the density itself, a reasonable choice is to pick an **intrinsic loss**.  However, density estimation is usually an intermediate step for another task, in which case the loss should  be defined on this final task rather than on the intermediate density estimation task.  
+
+However, in certain prediction or non-informative setting, the intrinsic loss gives you a "default" choice of loss defined by computing distance of two distribution or densities (here the "action" is to pick one value for the latent z):
+\begin{eqnarray}
+L(z, z') = d(\ell(\cdot|z), \ell(\cdot|z')),
+\end{eqnarray}
+where $d$ is a distance or divergence between distributions, for example:
+
+**The Kullback-Leibler (KL) divergence:**
+
+\begin{eqnarray}
+L(Z', Z) = \E \left[ \log\left( \frac{\ell(X|Z)}{\ell(X|Z')} \right) | Z \right],
+\end{eqnarray}
+
+where $Z$ can be interpreted at the true but unknown latent variable, and $Z'$ is our guess (action). Note that this is not symmetric in its arguments and not always defined (but if the support of all the likelihoods are the same it will be defined). On the other hand, it is invariant to the parameterization of the likelihood.
+
+**The Hellinger distance:**
+
+\begin{eqnarray}
+L(Z', Z) = \frac{1}{2} \E \left[ \left( \sqrt{\frac{\ell(X|Z')}{\ell(X|Z)}} - 1 \right)^2 | Z \right].
+\end{eqnarray}
+
+This always exists (bounded by one), it is symmetric (and a proper distance) and is also invariant to the parameterization of the likelihood.
+
+**Exercise:** Suppose $X|Z$ is normally distributed with mean $Z$ and variance one. Find the Bayes estimator for the KL intrinsic loss, assuming that the posterior $p(z|x)$ is normally distributed with mean $\mu(x)$ and a variance of $\sigma^2$.
+
+**Exercise (harder):** Assume now that $X|Z$ is exponential with rate $Z$. 
+
+#### An example of loss for clustering: rand loss
+
+In clustering analysis, we try to find a partition $\rho$ dividing the indices of the datapoints into say two blocks or clusters. The points in the first cluster are explained using a first parametric model, and the points in the second cluster are explained using a second parametric model. Here we will focus on the loss rather than the probabilistic model. We will come back to the probabilistic model next week.
+
+A popular choice of loss function is the rand loss between a true and putative labeled partitions  $\rhot, \rhop$, denoted by $\randindex(\rhot, \rhop)$.<sub>Note that we turn the standard notion of rand index into a loss by taking 1 - the rand index.</sub>
+
+---
+
+**Definition:**
+The rand loss is defined as the number of (unordered) pairs of data points indices $\{i,j\}$ such that $(i \sim\_{\rhot} j) \neq (i \sim\_{\rhop} j)$, i.e.:
+\begin{eqnarray}
+\sum\_{1\le i < j \le n} \1[(i \sim\_\rhot j) \neq (i \sim\_\rhop j)],
+\end{eqnarray}
+where $(i \sim\_\rho j) = 1$ if there is a $B\in\rho$ s.t. $\\{i,j\\}\subseteq B$, and $(i \sim\_\rho j) = 0$ otherwise.
+
+In other words, a loss of one is incurred each time either: (1) two points are assumed to be in the same cluster when they should not, or (2) two points are assumed to be in different clusters when they should be in the same cluster.
+
+<img src="{{ site.url }}/images/Randloss.jpg" alt="Drawing" style="width: 300px;"/> 
+
+---
+
+The rand loss has several problems, motivating other clustering losses such as the adjusted rand index, but we will look at the rand loss here since the derivation of the Bayes estimator is easy for that particular loss. (See [Fritsch and Ickstadt, 2009](http://ba.stat.cmu.edu/journal/2009/vol04/issue02/fritsch.pdf) for discussion on other losses and how to approach the Bayes estimator optimization problem for these other losses.)
+
+As reviewed earlier, the Bayesian framework is reductionist: given a loss function $L$ and a probability model $(\rho, X) \sim \P$, it prescribes the following estimator:
+\begin{eqnarray} 
+\argmin\_{\rho'} \E[L(\rho', \rho) | X].
+\end{eqnarray}
+
+We will now see with the current example how this abstract quantity can be computed or approximated in practice.
+
+First, for the rand loss, we can write:
+\\begin{eqnarray}
+\argmin\_{\textrm{partition }\rho'} \E\left[\randindex(\rho, \rho')|X\right] & = &
+\argmin\_{\textrm{partition }\rho'} \sum\_{i<j} \E \left[\1 \left[\rho\_{ij} \neq \rho'\_{ij}\right]|X\right] \\\\
+&=&\argmin\_{\textrm{partition }\rho'} \sum\_{i<j} \left\\{(1-\rho'\_{ij})\P(\rho\_{ij} = 1|X) + \rho'\_{ij} \left(1- \P(\rho\_{ij} = 1 |X)\right)\right\\} \label{eq:loss-id}
+\\end{eqnarray}
+where $\rho\_{i,j} = (i \sim\_{\rho} j)$, which can be viewed as edge indicators on a graph. 
+
+The above identity comes from the fact that $\rho\_{i,j}$ is either one or zero, so:
+
+- the first term in the the brackets of Equation~(\ref{eq:loss-id}) corresponds to the edges not in the partition $\rho$ (for which we are penalized if the posterior probability of the edge is large), and 
+- the second term in the same brackets corresponds to the edges in the partition $\rho$ (for which we are penalized if the posterior probability of the edge is small).
+
+This means that computing an optimal bipartition of the data into two clusters can be done in two steps:
+
+1. Simulating a Markov chain, and use the samples to estimate $\partstrength\_{i,j} = \P(\rho\_{ij} = 1 | Y)$ via  Monte Carlo averages.
+2. Minimize the linear objective function $\sum\_{i<j} \left\\{(1-\rho\_{ij})\partstrength\_{i,j} + \rho\_{ij} \left(1- \partstrength\_{i,j}\right)\right\\}$ over bipartitions $\rho$.
+
+Note that the second step can be efficiently computed using min-flow/max-cut algorithms (understanding how this algorithm works is outside of the scope of this lecture, but if you are curious, see [CLRS](http://mitpress.mit.edu/books/introduction-algorithms), chapter 26).  
+
+---
+
+#### Well-specified Bayesian models exist, but can force us to be non-parametric
+
+Let us make the discussion on de Finetti from last week more formal.
+
+**Recall:** A finite sequence of random variables $(X\_1, \dots, X\_n)$ is exchangeable if for any permutation $\sigma : \\{1, \dots, n\\} \to \\{1, \dots, n\\}$, we have:
+
+\\begin{eqnarray}
+({X\_1}, \dots, {X\_n}) \deq ({X\_{\sigma(1)}}, \dots, {X\_{\sigma(n)}}).
+\\end{eqnarray}
+
+**Extension:** A countably infinite sequence of random variable $(X\_1, X\_2, \dots)$ is **(infinitely) exchangeable** if all finite sub-sequence $(X\_{k\_1}, \dots, X\_{k\_n})$ are exchangeable.
+
+**Theorem:** De Finetti ([simple version](http://www.math.kth.se/matstat/gru/Statistical%20inference/definetti.pdf)): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of **binary** random variables, $X\_i : \Omega' \to \\{0,1\\}$ then there exists a random variable $Z : \Omega' \to [0, 1]$ such that $X\_i | Z \sim \Bern(Z)$.
+
+In other words, if all we are modelling is a sequence of exchangeable binary random variables, we do not need a non-parametric model. On the other hand, if the $X\_i$ are real, the situation is different:
+
+**Theorem:** De Finetti (more general version, see [Kallenberg, 2005](http://www.springer.com/statistics/statistical+theory+and+methods/book/978-0-387-25115-8), Chapter 1.1): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of real-valued random variables, the there exists a random measure $G : \Omega' \to (\sa\_{\Omega} \to [0,1])$ such that $X\_i | G \sim G$.
+
+
+
+
+#### Hierarchical models
+
+Since conjugacy leads us to consider families of priors indexed by a hyper-parameter $h$, this begs the question of how to pick $h$. Note that both $m\_h(x)$ and $p\_h(z | x)$ implicitly depend on $h$. Here are some guidelines for approaching this question:
+
+1. One can maximize $m\_h(x)$ over $h$, an approach called **empirical Bayes**. Note however that this does not fit the Bayesian framework (despite its name).
+2. If the dataset is moderate to large, one can test a range of reasonable values for $h$ (a range obtained for example from discussion with a domain expert); if the action selected by the Bayes estimator is not affected (or not affected too much), one can side-step this issue and pick arbitrarily from the set of reasonable values.
+3. If it is an option, one can collect more data *from the same population*. Under regularity conditions, the effect of the prior can be decreased arbitrarily (this follows from the celebrated Bernstein-von Mises theorem, see van der Vaart, p.140).
+4. If we only have access to other datasets that are related (in the sense that they have the same type of latent space $\Zscr$), but potentially from different populations, we can still exploit them using a **hierarchical Bayesian** model, described next.
+
+Hierarchical Bayesian models are conceptually simple: 
+
+1. We create distinct, exchangeable latent variables $Z\_j$, one for each related dataset $X\_j$
+2. We make the hyper-parameter $h$ be the realization of a random variable $H$. This allows the dataset to originate from different populations.
+3. We force all $Z\_j$ to share this one hyper-parameter. This step is crucial as it allows information to flow between the datasets.
+
+<img src="{{ site.url }}/images/hierarchical-lec3-fixedcap.png" alt="Drawing" style="width: 400px; float: center"/>
+
+One still has to pick a new prior $p^*$ on $H$, and to go again through steps 1-4 above, but this time with more data incorporated. Note that this process can be iterated as long as there is some form of known hierarchical structure in the data (as a concrete example of a type of dataset that has this property, see this non-parametric Bayesian approach to $n$-gram modelling: [Teh, 2006](http://acl.ldc.upenn.edu/P/P06/P06-1124.pdf)). More complicated techniques are needed when the hierarchical structure is unknown (we will talk about two of these techniques later in this course, namely hierarchical clustering and phylogenetics).
+
+The cost of taking the hierarchical Bayes route is that it generally requires resorting to Monte Carlo approximation, even if the initial model is conjugate.
+
+
+
+
+### Supplementary references and notes
+
+**Robert, C. (2007) The Bayesian Choice.** An excellent textbook, especially for the theoretically foundations of Bayesian statistics. Also covers many practical topics. Most relevant to this course are chapters 2, 3.1-3.3, 4.1-4.2.
+
+**van der Vaart, A.W. (1998) Asymptotic Statistics.** Chapter 10 contains a formal treatment of the asymptotic properties of parametric Bayesian procedures. Note that a different treatment is needed for non-parametric Bayesian procedures.

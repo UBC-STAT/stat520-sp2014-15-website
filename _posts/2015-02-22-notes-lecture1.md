@@ -56,11 +56,7 @@ However, the computation required to implement this recipe may be considerable. 
 
 **Example from assignment 1, continued.** 
 
----
 
-**Optional exercise:** If you have not seen this material before, show that in the special case where $L$ is the squared loss on $L(a, z) = (z - a)^2$, one can compute a simple expression for the minimizer, which is simply $\delta^*(X) = \E[Z|X]$. 
-
-For other losses finding such an expression may or may not be possible. We will talk about approximation strategies for the latter case later in this course. 
 
 ---
 
@@ -70,23 +66,6 @@ Of course, these nice properties assume that the model is a true representation 
 
 This provides a motivation for creating richer models that are more faithful to reality. In particular, models of adaptive complexity, that become progressively complex as more data become available. These models are called **non-parametric** (more formal definition below).
 
-#### Well-specified Bayesian models exist, but can force us to be non-parametric
-
-Let us make the discussion on de Finetti from last week more formal.
-
-**Recall:** A finite sequence of random variables $(X\_1, \dots, X\_n)$ is exchangeable if for any permutation $\sigma : \\{1, \dots, n\\} \to \\{1, \dots, n\\}$, we have:
-
-\\begin{eqnarray}
-({X\_1}, \dots, {X\_n}) \deq ({X\_{\sigma(1)}}, \dots, {X\_{\sigma(n)}}).
-\\end{eqnarray}
-
-**Extension:** A countably infinite sequence of random variable $(X\_1, X\_2, \dots)$ is **(infinitely) exchangeable** if all finite sub-sequence $(X\_{k\_1}, \dots, X\_{k\_n})$ are exchangeable.
-
-**Theorem:** De Finetti ([simple version](http://www.math.kth.se/matstat/gru/Statistical%20inference/definetti.pdf)): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of **binary** random variables, $X\_i : \Omega' \to \\{0,1\\}$ then there exists a random variable $Z : \Omega' \to [0, 1]$ such that $X\_i | Z \sim \Bern(Z)$.
-
-In other words, if all we are modelling is a sequence of exchangeable binary random variables, we do not need a non-parametric model. On the other hand, if the $X\_i$ are real, the situation is different:
-
-**Theorem:** De Finetti (more general version, see [Kallenberg, 2005](http://www.springer.com/statistics/statistical+theory+and+methods/book/978-0-387-25115-8), Chapter 1.1): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of real-valued random variables, the there exists a random measure $G : \Omega' \to (\sa\_{\Omega} \to [0,1])$ such that $X\_i | G \sim G$.
 
 
 #### Bayesian estimation in parametric families
@@ -201,28 +180,6 @@ m(x) & = & \frac{p\_{h}(z) \ell(x | z)}{p(z | x)} \\\\
 \\end{eqnarray}
 
 Since this is true for all $z$, we can pick an arbitrary $z\_0$, and evaluate each component of the right-hand side by assumption.
-
-#### Hierarchical models
-
-Since conjugacy leads us to consider families of priors indexed by a hyper-parameter $h$, this begs the question of how to pick $h$. Note that both $m\_h(x)$ and $p\_h(z | x)$ implicitly depend on $h$. Here are some guidelines for approaching this question:
-
-1. One can maximize $m\_h(x)$ over $h$, an approach called **empirical Bayes**. Note however that this does not fit the Bayesian framework (despite its name).
-2. If the dataset is moderate to large, one can test a range of reasonable values for $h$ (a range obtained for example from discussion with a domain expert); if the action selected by the Bayes estimator is not affected (or not affected too much), one can side-step this issue and pick arbitrarily from the set of reasonable values.
-3. If it is an option, one can collect more data *from the same population*. Under regularity conditions, the effect of the prior can be decreased arbitrarily (this follows from the celebrated Bernstein-von Mises theorem, see van der Vaart, p.140).
-4. If we only have access to other datasets that are related (in the sense that they have the same type of latent space $\Zscr$), but potentially from different populations, we can still exploit them using a **hierarchical Bayesian** model, described next.
-
-Hierarchical Bayesian models are conceptually simple: 
-
-1. We create distinct, exchangeable latent variables $Z\_j$, one for each related dataset $X\_j$
-2. We make the hyper-parameter $h$ be the realization of a random variable $H$. This allows the dataset to originate from different populations.
-3. We force all $Z\_j$ to share this one hyper-parameter. This step is crucial as it allows information to flow between the datasets.
-
-<img src="{{ site.url }}/images/hierarchical-lec3-fixedcap.png" alt="Drawing" style="width: 400px; float: center"/>
-
-One still has to pick a new prior $p^*$ on $H$, and to go again through steps 1-4 above, but this time with more data incorporated. Note that this process can be iterated as long as there is some form of known hierarchical structure in the data (as a concrete example of a type of dataset that has this property, see this non-parametric Bayesian approach to $n$-gram modelling: [Teh, 2006](http://acl.ldc.upenn.edu/P/P06/P06-1124.pdf)). More complicated techniques are needed when the hierarchical structure is unknown (we will talk about two of these techniques later in this course, namely hierarchical clustering and phylogenetics).
-
-The cost of taking the hierarchical Bayes route is that it generally requires resorting to Monte Carlo approximation, even if the initial model is conjugate.
-
 
 
 
