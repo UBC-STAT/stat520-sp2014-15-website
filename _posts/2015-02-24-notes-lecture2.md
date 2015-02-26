@@ -6,7 +6,7 @@ category: 'Lecture'
 
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;
 
-Based on: lecture 3 from last year.
+Based on: lecture 3,5 from last year.
 
 
 ### More examples of losses
@@ -30,7 +30,7 @@ where $d$ is a distance or divergence between distributions, for example:
 **The Kullback-Leibler (KL) divergence:**
 
 \begin{eqnarray}
-L(Z', Z) = \E \left[ \log\left( \frac{\ell(X|Z)}{\ell(X|Z')} \right) | Z \right],
+L(z', Z) = \E \left[ \log\left( \frac{\ell(X|Z)}{\ell(X|z')} \right) | Z \right],
 \end{eqnarray}
 
 where $Z$ can be interpreted at the true but unknown latent variable, and $Z'$ is our guess (action). Note that this is not symmetric in its arguments and not always defined (but if the support of all the likelihoods are the same it will be defined). On the other hand, it is invariant to the parameterization of the likelihood.
@@ -38,14 +38,16 @@ where $Z$ can be interpreted at the true but unknown latent variable, and $Z'$ i
 **The Hellinger distance:**
 
 \begin{eqnarray}
-L(Z', Z) = \frac{1}{2} \E \left[ \left( \sqrt{\frac{\ell(X|Z')}{\ell(X|Z)}} - 1 \right)^2 | Z \right].
+L(z', Z) = \frac{1}{2} \E \left[ \left( \sqrt{\frac{\ell(X|z')}{\ell(X|Z)}} - 1 \right)^2 | Z \right].
 \end{eqnarray}
 
 This always exists (bounded by one), it is symmetric (and a proper distance) and is also invariant to the parameterization of the likelihood.
 
-**Exercise:** Suppose $X|Z$ is normally distributed with mean $Z$ and variance one. Find the Bayes estimator for the KL intrinsic loss, assuming that the posterior $p(z|x)$ is normally distributed with mean $\mu(x)$ and a variance of $\sigma^2$.
+**Exercise:** Suppose $X|Z$ is normally distributed with mean $Z$ and variance one, and we put a normal prior on $Z$. Find the Bayes estimator for the KL intrinsic loss.
 
-**Exercise (harder):** Assume now that $X|Z$ is exponential with rate $Z$. 
+**Exercise (harder):** Assume now that $X|Z$ is exponential with rate $Z$, and that the posterior was approximated by some MC samples $Z^{(1)}, \dots, Z^{(N)}$. How would you approach the problem of approximating the Bayes estimator for the Hellinger intrinsic loss in this case? Hint: the Hellinger distance is given by $1 - 2\sqrt{z'z}/(z' + z)$ in the exponential case.
+
+More generally, how to approximate Bayes estimators from MC samples for a "black box" loss (i.e. a loss where all you can do is do pointwise evaluation? Can this be done computationally efficiently (in the sense that the computational cost is not that much than running the MCMC chain)?
 
 #### An example of loss for clustering: rand loss
 
@@ -97,9 +99,41 @@ This means that computing an optimal bipartition of the data into two clusters c
 
 Note that the second step can be efficiently computed using min-flow/max-cut algorithms (understanding how this algorithm works is outside of the scope of this lecture, but if you are curious, see [CLRS](http://mitpress.mit.edu/books/introduction-algorithms), chapter 26).  
 
----
 
-#### Well-specified Bayesian models exist, but can force us to be non-parametric
+### Consistency result
+
+**Assumptions:**
+
+- We have a parametric model as described last time.  $\ell(\cdot|z)$.
+- The likelihood family is identifiable: $\P\_z \neq \P\_{z'}$ whenever $z \neq z'$.
+- The prior $\Pi$ is positive on the space of unknown parameters $\Zscr$.
+
+**Notation:**
+
+- Denote the posterior distribution obtained by seeing $n$ datapoints $x\_{1:n}$ by $\Pi(\cdot|x\_{1:n})$ (corresponding to the density $p(\cdot|x)$ from last time). 
+- Similarly let $\Pi$ denote the prior distribution, 
+- and $\P\_z$, the conditional distribution corresponding to the density $\ell(\cdot|z)$
+
+**Doob's consistency theorem:** under the above assumptions,
+
+\\begin{eqnarray}
+\P\left( \Pi(\cdot|X\_{1:n}) \to \delta\_Z(\cdot) \right) = 1,
+\\end{eqnarray}
+
+where $\delta$ denote the dirac distribution on the true parameter $Z$, and $\to$ denotes convergence in distribution, i.e. $\mu_n \to \mu$ if for all continuous bounded $\phi$, 
+
+\\begin{eqnarray}
+\int \phi (\tilde z) \mu_n(\ud \tilde z) \to \int \phi (\tilde z) \mu(\ud \tilde z).
+\\end{eqnarray}
+
+**Notes:**
+
+- Extremely useful in practice for debugging.
+- This can break in non-parametric models.
+- For a proof, see van der Vaart, p.149. Asymptotic normality also holds under additional conditions.
+- What if the prior $\Pi$ is very wrong (e.g. wrong support/structure)? Not much protection within the Bayesian framework for model mis-specification. Use frequentist validation! E.g.: cross validation, coverage assessment.
+
+### Well-specified Bayesian models exist, but can force us to be non-parametric
 
 Let us make the discussion on de Finetti from last week more formal.
 
@@ -118,9 +152,7 @@ In other words, if all we are modelling is a sequence of exchangeable binary ran
 **Theorem:** De Finetti (more general version, see [Kallenberg, 2005](http://www.springer.com/statistics/statistical+theory+and+methods/book/978-0-387-25115-8), Chapter 1.1): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of real-valued random variables, the there exists a random measure $G : \Omega' \to (\sa\_{\Omega} \to [0,1])$ such that $X\_i | G \sim G$.
 
 
-
-
-#### Hierarchical models
+### Hierarchical models
 
 Since conjugacy leads us to consider families of priors indexed by a hyper-parameter $h$, this begs the question of how to pick $h$. Note that both $m\_h(x)$ and $p\_h(z | x)$ implicitly depend on $h$. Here are some guidelines for approaching this question:
 

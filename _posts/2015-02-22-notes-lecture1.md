@@ -8,7 +8,7 @@ Instructor: Alexandre Bouchard-C&ocirc;t&eacute;
 
 Based on: lecture 3 from last year.
 
-### Overview of some useful concepts from Bayesian statistics
+### Notation for a generic statistical problem
 
 Consider the following generic statistical problem: 
 
@@ -20,7 +20,7 @@ More generally, we want to devise a decision-making strategy, which we formalize
 
 We want this estimator to be as "good" as possible. Under a certain criterion of goodness, we will see that the Bayesian framework provides a principled and systematic way of specifying a "best" estimator. 
 
-#### Bayes estimators
+### Bayes estimators
 
 Here is a very frequent **misconception** about the Bayesian framework that we will try to correct: "Bayesian methods consist of computing the posterior distribution and returning the point with the highest posterior density (1)." Other variants: "Bayesian methods consist of returning the posterior expectation of the parameters (2)." 
 
@@ -56,8 +56,6 @@ However, the computation required to implement this recipe may be considerable. 
 
 **Example from assignment 1, continued.** 
 
-
-
 ---
 
 Note that other criteria certainly exist for selecting estimators, in particular frequentist criteria. Some of these criteria, such as [admissibility](http://en.wikipedia.org/wiki/Admissible_decision_rule), do not create a total order on the estimator (even under strictly convex losses), they only provide a partial order. Moreover, since the Bayes estimator can be shown to be non-suboptimal under this criterion as well (in other words, admissible).
@@ -68,7 +66,7 @@ This provides a motivation for creating richer models that are more faithful to 
 
 
 
-#### Bayesian estimation in parametric families
+### Bayesian estimation in parametric families
 
 Many non-parametric models are built by composing a random number of parametric models (DP by themselves would be limited since it would predict duplicates in the observations, which we may not want). Parametric models are also very useful by themselves, for example for computational tractability reasons. 
 
@@ -132,7 +130,7 @@ The integrals in Equations~(\ref{eq:posterior}, \ref{eq:marginal}) constitute on
 - Approximating the integral via approximation methods (MCMC, SMC, variational, etc; more on that later).
 - Picking the prior and likelihood so that analytic computations are possible (described in the next section).
 
-#### Conjugacy in parametric families
+### Conjugacy in parametric families
 
 Let us say that we are given a fixed likelihood model $\Lscr$. Our strategy to ensure tractable expressions in Equations~(\ref{eq:posterior}, \ref{eq:marginal})   consists in constructing a family of distributions over $z$, $\Cscr = \\{p_h\\}$ (where $h$ is an index called a **hyper-parameter**), such that:
 

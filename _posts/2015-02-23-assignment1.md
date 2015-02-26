@@ -33,3 +33,12 @@ Using this toy data, answer the following questions:
 Food for thoughts (not in the assignment): 
 
 - What if there is a very large number of versions (e.g. all configurations of background colour, text colour, fonts, etc)?
+
+Exercises
+=========
+
+Summarize your solution for the following exercises covered in class:
+
+- Suppose $X|Z$ is normally distributed with mean $Z$ and variance one, and we put a normal prior on $Z$. Find the Bayes estimator for the KL intrinsic loss.
+- (Optional) Assume now that $X|Z$ is exponential with rate $Z$, and that the posterior was approximated by some MC samples $Z^{(1)}, \dots, Z^{(N)}$. How would you approach the problem of approximating the Bayes estimator for the Hellinger intrinsic loss in this case? Hint: the Hellinger distance is given by $1 - 2\sqrt{x'x}/(x' + x)$ in the exponential case.
+- (Optional) More generally, how to approximate Bayes estimators from MC samples for a "black box" loss (i.e. a loss where all you can do is do pointwise evaluation? Can this be done computationally efficiently (in the sense that the computational cost is not that much than running the MCMC chain)?
