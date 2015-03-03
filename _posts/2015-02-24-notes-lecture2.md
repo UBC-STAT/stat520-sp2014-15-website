@@ -19,13 +19,15 @@ For other losses finding such an expression may or may not be possible. We will 
 
 #### An example of loss for predicting the next point
 
-In the case of density estimation, if the task is to reconstruct the density itself, a reasonable choice is to pick an [intrinsic loss](http://link.springer.com/article/10.1007/BF00133173). However, density estimation is usually an intermediate step for another task, in which case the loss should  be defined on this final task rather than on the intermediate density estimation task.  
+In the case of density estimation, if the task is to reconstruct the density itself, a reasonable choice is to pick an [intrinsic loss](http://link.springer.com/article/10.1007/BF00133173). Intrinsic loss functions are derived from sampling distributions based on the notion of "distances" between distributions. Such a loss functions are desirable because they have minimal influence on inference (the loss function analog to non-informative priors), and are not dependent on the parameterization of distributions.
 
-However, in certain prediction or non-informative setting, the intrinsic loss gives you a "default" choice of loss defined by computing distance of two distribution or densities (here the "action" is to pick one value for the latent z):
+Note that density estimation is usually an intermediate step for another task. In such cases the loss function should be defined on this final task rather than on the intermediate density estimation task. Otherwise, the intrinsic loss gives you a "default" choice of loss defined by computing distance of two distribution or densities (here the "action" is to pick one value for the latent z):
 \begin{eqnarray}
 L(z, z') = d(\ell(\cdot|z), \ell(\cdot|z')),
 \end{eqnarray}
-where $d$ is a distance or divergence between distributions, for example:
+where $d$ is a distance or divergence between distributions.
+
+The following are two examples of distances leading to intrinsic loss functions. Note that the Kullback-Leibler distance is much more commonly used due to its tractability and ties with information theory.
 
 **The Kullback-Leibler (KL) divergence:**
 
@@ -47,13 +49,13 @@ This always exists (bounded by one), it is symmetric (and a proper distance) and
 
 **Exercise (harder):** Assume now that $X|Z$ is exponential with rate $Z$, and that the posterior was approximated by some MC samples $Z^{(1)}, \dots, Z^{(N)}$. How would you approach the problem of approximating the Bayes estimator for the Hellinger intrinsic loss in this case? Hint: the Hellinger distance is given by $1 - 2\sqrt{z'z}/(z' + z)$ in the exponential case.
 
-More generally, how to approximate Bayes estimators from MC samples for a "black box" loss (i.e. a loss where all you can do is do pointwise evaluation? Can this be done computationally efficiently (in the sense that the computational cost is not that much than running the MCMC chain)?
+More generally, can the Bayes estimator be approximated using MC samples for any "black box" loss (i.e. a loss where all you can do is do pointwise evaluation)? Can this be done in a computationally efficient manner (in the sense that the computational cost is not significantly more than it takes to run the MCMC chain)?
 
 #### An example of loss for clustering: rand loss
 
-In clustering analysis, we try to find a partition $\rho$ dividing the indices of the datapoints into say two blocks or clusters. The points in the first cluster are explained using a first parametric model, and the points in the second cluster are explained using a second parametric model. Here we will focus on the loss rather than the probabilistic model. We will come back to the probabilistic model next week.
+In clustering analysis, the objective is to find a partition $\rho$ which divides the indices of the datapoints into "blocks" or "clusters". The points in the first cluster are explained using a first parametric model, the points in the second cluster are explained using a second parametric model, etc. Here we will focus on a loss function for clustering rather than the probabilistic model. We will come back to the probabilistic model for clustering next week.
 
-A popular choice of loss function is the rand loss between a true and putative labeled partitions  $\rhot, \rhop$, denoted by $\randindex(\rhot, \rhop)$.<sub>Note that we turn the standard notion of rand index into a loss by taking 1 - the rand index.</sub>
+Here, we discuss a popular loss function for clustering known as the rand loss. For true and putative labeled partitions $\rhot, \rhop$, the rand loss function is denotes as $\randindex(\rhot, \rhop)$. Note that we turn the standard notion of rand index into a loss by taking 1 - the rand index.
 
 ---
 
@@ -64,7 +66,7 @@ The rand loss is defined as the number of (unordered) pairs of data points indic
 \end{eqnarray}
 where $(i \sim\_\rho j) = 1$ if there is a $B\in\rho$ s.t. $\\{i,j\\}\subseteq B$, and $(i \sim\_\rho j) = 0$ otherwise.
 
-In other words, a loss of one is incurred each time either: (1) two points are assumed to be in the same cluster when they should not, or (2) two points are assumed to be in different clusters when they should be in the same cluster.
+In other words, a loss of one is incurred each time either: (1) two points are assigned to the same cluster when they belong in separate clusters, or (2) two points are assigned to different clusters when they should be in the same cluster.
 
 <img src="{{ site.url }}/images/Randloss.jpg" alt="Drawing" style="width: 300px;"/> 
 
@@ -77,7 +79,7 @@ As reviewed earlier, the Bayesian framework is reductionist: given a loss functi
 \argmin\_{\rho'} \E[L(\rho', \rho) | X].
 \end{eqnarray}
 
-We will now see with the current example how this abstract quantity can be computed or approximated in practice.
+We will now demonstrate, using the current example, how this abstract quantity can be computed or approximated in practice.
 
 First, for the rand loss, we can write:
 \\begin{eqnarray}
@@ -100,7 +102,7 @@ This means that computing an optimal bipartition of the data into two clusters c
 Note that the second step can be efficiently computed using min-flow/max-cut algorithms (understanding how this algorithm works is outside of the scope of this lecture, but if you are curious, see [CLRS](http://mitpress.mit.edu/books/introduction-algorithms), chapter 26).  
 
 
-### Consistency result
+### Consistency result for Bayesian statistics
 
 **Assumptions:**
 
@@ -110,17 +112,17 @@ Note that the second step can be efficiently computed using min-flow/max-cut alg
 
 **Notation:**
 
-- Denote the posterior distribution obtained by seeing $n$ datapoints $x\_{1:n}$ by $\Pi(\cdot|x\_{1:n})$ (corresponding to the density $p(\cdot|x)$ from last time). 
+- Let $\Pi(\cdot|x\_{1:n})$ denote the posterior distribution obtained by seeing $n$ datapoints $x\_{1:n}$. This distribution corresponds to the density $p(\cdot|x)$ from last time. 
 - Similarly let $\Pi$ denote the prior distribution, 
-- and $\P\_z$, the conditional distribution corresponding to the density $\ell(\cdot|z)$
+- Let $\P\_z$ denote the conditional distribution corresponding to the density $\ell(\cdot|z)$
 
-**Doob's consistency theorem:** under the above assumptions,
+**Doob's consistency theorem:** Under the above assumptions,
 
 \\begin{eqnarray}
 \P\left( \Pi(\cdot|X\_{1:n}) \to \delta\_Z(\cdot) \right) = 1,
 \\end{eqnarray}
 
-where $\delta$ denote the dirac distribution on the true parameter $Z$, and $\to$ denotes convergence in distribution, i.e. $\mu_n \to \mu$ if for all continuous bounded $\phi$, 
+where $\delta$ denote the dirac distribution on the true parameter $Z$, and $\to$ denotes convergence in distribution. That is, $\mu_n \to \mu$ if for all continuous bounded $\phi$, 
 
 \\begin{eqnarray}
 \int \phi (\tilde z) \mu_n(\ud \tilde z) \to \int \phi (\tilde z) \mu(\ud \tilde z).
@@ -128,9 +130,9 @@ where $\delta$ denote the dirac distribution on the true parameter $Z$, and $\to
 
 **Notes:**
 
-- Extremely useful in practice for debugging.
-- This can break in non-parametric models.
-- For a proof, see van der Vaart, p.149. Asymptotic normality also holds under additional conditions.
+- This result is extremely useful in practice for debugging.
+- This result can break in non-parametric models.
+- van der Vaart, p.149 provides a proof of this result. Asymptotic normality also holds under additional conditions.
 - What if the prior $\Pi$ is very wrong (e.g. wrong support/structure)? Not much protection within the Bayesian framework for model mis-specification. Use frequentist validation! E.g.: cross validation, coverage assessment.
 
 ### Well-specified Bayesian models exist, but can force us to be non-parametric
