@@ -19,7 +19,7 @@ For other losses finding such an expression may or may not be possible. We will 
 
 #### An example of loss for predicting the next point
 
-In the case of density estimation, if the task is to reconstruct the density itself, a reasonable choice is to pick an **intrinsic loss**.  However, density estimation is usually an intermediate step for another task, in which case the loss should  be defined on this final task rather than on the intermediate density estimation task.  
+In the case of density estimation, if the task is to reconstruct the density itself, a reasonable choice is to pick an [intrinsic loss](http://link.springer.com/article/10.1007/BF00133173). However, density estimation is usually an intermediate step for another task, in which case the loss should  be defined on this final task rather than on the intermediate density estimation task.  
 
 However, in certain prediction or non-informative setting, the intrinsic loss gives you a "default" choice of loss defined by computing distance of two distribution or densities (here the "action" is to pick one value for the latent z):
 \begin{eqnarray}
@@ -150,30 +150,6 @@ Let us make the discussion on de Finetti from last week more formal.
 In other words, if all we are modelling is a sequence of exchangeable binary random variables, we do not need a non-parametric model. On the other hand, if the $X\_i$ are real, the situation is different:
 
 **Theorem:** De Finetti (more general version, see [Kallenberg, 2005](http://www.springer.com/statistics/statistical+theory+and+methods/book/978-0-387-25115-8), Chapter 1.1): If $(X\_1, X\_2, \dots)$ is an exchangeable sequence of real-valued random variables, the there exists a random measure $G : \Omega' \to (\sa\_{\Omega} \to [0,1])$ such that $X\_i | G \sim G$.
-
-
-### Hierarchical models
-
-Since conjugacy leads us to consider families of priors indexed by a hyper-parameter $h$, this begs the question of how to pick $h$. Note that both $m\_h(x)$ and $p\_h(z | x)$ implicitly depend on $h$. Here are some guidelines for approaching this question:
-
-1. One can maximize $m\_h(x)$ over $h$, an approach called **empirical Bayes**. Note however that this does not fit the Bayesian framework (despite its name).
-2. If the dataset is moderate to large, one can test a range of reasonable values for $h$ (a range obtained for example from discussion with a domain expert); if the action selected by the Bayes estimator is not affected (or not affected too much), one can side-step this issue and pick arbitrarily from the set of reasonable values.
-3. If it is an option, one can collect more data *from the same population*. Under regularity conditions, the effect of the prior can be decreased arbitrarily (this follows from the celebrated Bernstein-von Mises theorem, see van der Vaart, p.140).
-4. If we only have access to other datasets that are related (in the sense that they have the same type of latent space $\Zscr$), but potentially from different populations, we can still exploit them using a **hierarchical Bayesian** model, described next.
-
-Hierarchical Bayesian models are conceptually simple: 
-
-1. We create distinct, exchangeable latent variables $Z\_j$, one for each related dataset $X\_j$
-2. We make the hyper-parameter $h$ be the realization of a random variable $H$. This allows the dataset to originate from different populations.
-3. We force all $Z\_j$ to share this one hyper-parameter. This step is crucial as it allows information to flow between the datasets.
-
-<img src="{{ site.url }}/images/hierarchical-lec3-fixedcap.png" alt="Drawing" style="width: 400px; float: center"/>
-
-One still has to pick a new prior $p^*$ on $H$, and to go again through steps 1-4 above, but this time with more data incorporated. Note that this process can be iterated as long as there is some form of known hierarchical structure in the data (as a concrete example of a type of dataset that has this property, see this non-parametric Bayesian approach to $n$-gram modelling: [Teh, 2006](http://acl.ldc.upenn.edu/P/P06/P06-1124.pdf)). More complicated techniques are needed when the hierarchical structure is unknown (we will talk about two of these techniques later in this course, namely hierarchical clustering and phylogenetics).
-
-The cost of taking the hierarchical Bayes route is that it generally requires resorting to Monte Carlo approximation, even if the initial model is conjugate.
-
-
 
 
 ### Supplementary references and notes
