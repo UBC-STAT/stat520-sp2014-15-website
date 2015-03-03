@@ -39,13 +39,13 @@ In full generality, approaching a problem in a Bayesian way consists of:
 
 **Example from assignment 1.** 
 
-Let $\Zscr$ denote the space of unknown parameters, $\Xscr$ denote the space of observations, and $\Ascr$ denote the set of possible actions. Furthermore, as described in [assignment 1](https://github.com/UBC-Stat-ML/stat520-sp2014-15-website/blob/master/_posts/2015-02-23-assignment1.md), let A denote the black background option, and B denote the white background option. Then, a model can be specified as follows:
+Let $\Zscr$ denote the space of unknown parameters, $\Xscr$ denote the space of observations, and $\Ascr$ denote the set of possible actions. Furthermore, as described in [assignment 1](http://www.stat.ubc.ca/~bouchard/courses/stat520-sp2014-15/homework/2015/02/23/assignment1.html), let A denote the black background option, and B denote the white background option. Then, a model can be specified as follows:
 
 - $X = (X\_A, X\_B) =$ (\# clicks in A, \# clicks in B)
 
 - $Z = (Z\_A, Z\_B)$ where $Z\_A, Z\_B \in [0,1]$. We assume that $Z\_A \sim Unif(0,1)$ and $Z\_B \sim Unif(0,1)$
 
-- $\Ascr = $\{A, B\}. That is, there are only two options, namely, A or B.
+- $\Ascr = \{A, B\}$. That is, there are only two options, namely, A or B.
 
 - $X\_A | Z\_A \sim Bin(N\_A, Z\_A)$ and $X\_B | Z\_B \sim Bin(N\_B, Z\_B)$ where $N\_A = 51$ and $N\_B = 47$
 
@@ -69,23 +69,19 @@ However, the computation required to implement this recipe may be considerable. 
 **Example from assignment 1, continued.** 
 
 In computing $\delta^*$ for the A-B testing example, note that 
-\\begin{eqnarray*}
+\begin{eqnarray}
 \E[L(\delta^*(X), Z)] = \int L(\delta^*(X(\omega), Z(\omega)) \P(\mathrm{d}\omega)
-\\end{eqnarray*} 
-
+\end{eqnarray} 
 so that
-
-\\begin{eqnarray*}
+\begin{eqnarray}
 \delta^*(X) =
 \begin{cases} A &\mbox{if } \P(Z\_A > Z\_B|X) > \frac{1}{2} \\
 B & \mbox{otherwise } \end{cases}
-\\end{eqnarray*}
-
+\end{eqnarray}
 where
-
-\\begin{eqnarray*}
+\begin{eqnarray}
 \P(Z\_A > Z\_B | X) = P(g(Z\_A, Z\_B) | X) = \int \int g(z\_A, z\_b) p(z\_A, z\_b| x) dz\_A dz\_B
-\\end{eqnarray*}
+\end{eqnarray}
 
 
 ---
@@ -200,9 +196,9 @@ To conclude, we use the simple but extremely useful fact that if two densities a
 
 For the A-B testing example under the formulation above, we have the following posterior:
 
-\\begin{eqnarray*}
+\begin{eqnarray}
 p(z|x) = \frac{\Gamma(\alpha\_1 + \alpha\_2 + n\_1(x) + n\_2(x))}{\Gamma(\alpha\_1 + n\_1(x))\Gamma(\alpha\_2 + n\_2(x))}
-\\end{eqnarray*}
+\end{eqnarray}
 
 where $n = n\_1(x) + n\_2(x)$. Then, it follows that
 
@@ -212,23 +208,23 @@ where $n = n\_1(x) + n\_2(x)$. Then, it follows that
 
 We can further decompose the joint posterior $p(z\_A, z\_B | X) = p(z\_A | X)p(z\_B | X)$ and after appropriate substitution find Equation~\ref{eq:AB-testing-int-risk} to be
 
-\\begin{eqnarray*}
+\begin{eqnarray}
 \int \int \frac{1}{N(\alpha\_A')} \frac{1}{N(\alpha\_B')} z\_A^{\alpha\_A' -1} (1-z\_A)^{\beta\_A' - 1} z\_B^{\alpha\_B' -1} (1-z\_B)^{\beta\_B' - 1} dz\_A dz\_B
-\\end{eqnarray*}
+\end{eqnarray}
 
 where $N(\alpha\_A')$ is the normalising constant for a Dirichlet distribution, $n\_1(\cdot)$ denotes a click, $n\_2(\cdot)$ denotes no click, $\alpha\_A' = 1 + n\_1(X\_A), \beta\_A' = 1 + n\_2(X\_A),$ and similarly for $\alpha\_B'$ and $\beta\_B'$.
 
 Although the A-B testing problem is now fully specified in analytical form, solving Equation~\ref{eq:AB-testing-int-risk} directly is not practical. Therefore, we solve the problem via a Monte Carlo approximation from the posterior.
 
 Let $z^{(i)} = (z\_A^{(i)}, z\_B^{(i)})$ denote the imputed latent states for $i = 1, 2, \dots, N$ with corresponding weights $w^{(i)} \in [0,1]$. For MCMC, the weights are simply $w^{(i)} = 1/N$ such that $\sum\_i w^{(i)} = 1$(weights in SMC are covered in later lectures). Then,
-
-\begin{eqnarray*}
+\begin{eqnarray}
 \E[g(Z)|X] = \sum_i^N w^{(i)} g(z^{(i)})
-\end{eqnarray*}
+\end{eqnarray}
 where
-\begin{eqnarray*}
+\begin{eqnarray}
 \sum_i^N W^{(i)} g(Z^{(i)}) \rightarrow \E[g(Z)|X].
-\end{eqnarray*}
+\end{eqnarray}
+
 Note that we used upper case $W$ and $Z$ since this convergence is based on the random quantities.
 
 ---
