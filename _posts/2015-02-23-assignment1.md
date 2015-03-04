@@ -50,7 +50,7 @@ Note: use JAGS for this problem.
 
 ### Question 4
 
-TBA during lecture of Wed March 3rd.
+Suppose that your goal is to predict an unobserved parameter $p$ of a Bernoulli random variable (for example, ``p_soyuz`` in the example covered in lecture 4). To make things interesting, suppose I give a prize to the best **pessimistic** prediction (respectively, optimistic), i.e. the one that is closest to the truth but not above it (respectively, not below it). Derive a Bayesian method to solve this problem. Optionally, implement your method on the launcher example dataset to compute an actual prediction.
 
 ### Theoretical questions
 
