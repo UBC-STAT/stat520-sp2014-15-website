@@ -44,7 +44,8 @@ Note: this question can be solved with either JAGS or Stan.
 
 ### Question 3
 
-Look at the data in the file ``texting-data.csv``. The $n$-th row represents the number of texts sent by a certain cellphone user on day $n$. Use a mixture model and JAGS to find a point in time where the user's texting habits changed in that period. Report the posterior over the point in time where the habits changed. To help inference, you can assume that the change point is away from the end-points of the time series.
+Look at the data in the file ``texting-data.csv``, pasted at the bottom of this page. The $n$-th row represents the number of texts sent by a certain cellphone user on day $n$. Use a mixture model and JAGS to find a point in time where the user's texting habits changed in that period. Report the posterior over the point in time where the habits changed. To help inference, you can assume that the change point is away from the end-points of the time series. 
+
 
 Note: use JAGS for this problem.
 
@@ -60,3 +61,82 @@ Summarize your solution for the following exercises covered in class:
 - Suppose $X|Z$ is normally distributed with mean $Z$ and variance one, and we put a normal prior on $Z$. Find the Bayes estimator for the KL intrinsic loss.
 - (Optional) Assume now that $X|Z$ is exponential with rate $Z$, and that the posterior was approximated by some MC samples $Z^{(1)}, \dots, Z^{(N)}$. How would you approach the problem of approximating the Bayes estimator for the Hellinger intrinsic loss in this case? Hint: the Hellinger distance is given by $1 - 2\sqrt{x'x}/(x' + x)$ in the exponential case.
 - (Optional) More generally, how to approximate Bayes estimators from MC samples for a "black box" loss (i.e. a loss where all you can do is do pointwise evaluation? Can this be done computationally efficiently (in the sense that the computational cost is not that much than running the MCMC chain)?
+
+### Data for question 3
+
+```
+1.300000000000000000e+01
+2.400000000000000000e+01
+8.000000000000000000e+00
+2.400000000000000000e+01
+7.000000000000000000e+00
+3.500000000000000000e+01
+1.400000000000000000e+01
+1.100000000000000000e+01
+1.500000000000000000e+01
+1.100000000000000000e+01
+2.200000000000000000e+01
+2.200000000000000000e+01
+1.100000000000000000e+01
+5.700000000000000000e+01
+1.100000000000000000e+01
+1.900000000000000000e+01
+2.900000000000000000e+01
+6.000000000000000000e+00
+1.900000000000000000e+01
+1.200000000000000000e+01
+2.200000000000000000e+01
+1.200000000000000000e+01
+1.800000000000000000e+01
+7.200000000000000000e+01
+3.200000000000000000e+01
+9.000000000000000000e+00
+7.000000000000000000e+00
+1.300000000000000000e+01
+1.900000000000000000e+01
+2.300000000000000000e+01
+2.700000000000000000e+01
+2.000000000000000000e+01
+6.000000000000000000e+00
+1.700000000000000000e+01
+1.300000000000000000e+01
+1.000000000000000000e+01
+1.400000000000000000e+01
+6.000000000000000000e+00
+1.600000000000000000e+01
+1.500000000000000000e+01
+7.000000000000000000e+00
+2.000000000000000000e+00
+1.500000000000000000e+01
+1.500000000000000000e+01
+1.900000000000000000e+01
+7.000000000000000000e+01
+4.900000000000000000e+01
+7.000000000000000000e+00
+5.300000000000000000e+01
+2.200000000000000000e+01
+2.100000000000000000e+01
+3.100000000000000000e+01
+1.900000000000000000e+01
+1.100000000000000000e+01
+1.800000000000000000e+01
+2.000000000000000000e+01
+1.200000000000000000e+01
+3.500000000000000000e+01
+1.700000000000000000e+01
+2.300000000000000000e+01
+1.700000000000000000e+01
+4.000000000000000000e+00
+2.000000000000000000e+00
+3.100000000000000000e+01
+3.000000000000000000e+01
+1.300000000000000000e+01
+2.700000000000000000e+01
+0.000000000000000000e+00
+3.900000000000000000e+01
+3.700000000000000000e+01
+5.000000000000000000e+00
+1.400000000000000000e+01
+1.300000000000000000e+01
+2.200000000000000000e+01
+```
