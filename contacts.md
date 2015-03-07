@@ -14,6 +14,7 @@ Course Information
 <address>
 **Instructor:** Alexandre Bouchard-Côté<br/>
 **Email:** bouchard AT stat.ubc.ca
+**Office hours:** Wed 3pm, ESB 3125
 </address>
 
 <address>

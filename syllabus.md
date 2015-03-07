@@ -55,7 +55,7 @@ The course project involves independent work on a topic of your choice, with the
 
 **Textbook:** I recommend [C. Robert's "The Bayesian Choice"](http://www.amazon.ca/Bayesian-Choice-Decision-Theoretic-Computational-Implementation/dp/0387715983). Other optional references will be posted at the bottom of the lecture note files.
 
-**Office hours:** TBA
+**Office hours:** See ``Contact`` tab above.
 
 **Short URL for this page:** [http://tinyurl.com/redferret](http://tinyurl.com/redferret)
 
