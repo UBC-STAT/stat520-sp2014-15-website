@@ -68,17 +68,22 @@ However, the computation required to implement this recipe may be considerable. 
 
 **Example from assignment 1, continued.** 
 
-In computing $\delta^*$ for the A-B testing example, note that 
+In computing $\delta^\*$ for the A-B testing example, note that 
+
 \begin{eqnarray}
-\E[L(\delta^*(X), Z)] = \int L(\delta^*(X(\omega), Z(\omega)) \P(\mathrm{d}\omega)
+\E[L(\delta^\*(X), Z)] = \int L(\delta^\*(X(\omega), Z(\omega)) \P(\mathrm{d}\omega)
 \end{eqnarray} 
+
 so that
+
 \begin{eqnarray}
-\delta^*(X) =
+\delta^\*(X) =
 \begin{cases} A &\mbox{if } \P(Z\_A > Z\_B|X) > \frac{1}{2} \\
 B & \mbox{otherwise } \end{cases}
 \end{eqnarray}
+
 where
+
 \begin{eqnarray}
 \P(Z\_A > Z\_B | X) = P(g(Z\_A, Z\_B) | X) = \int \int g(z\_A, z\_b) p(z\_A, z\_b| x) dz\_A dz\_B
 \end{eqnarray}
@@ -206,7 +211,7 @@ where $n = n\_1(x) + n\_2(x)$. Then, it follows that
 \P(Z\_A < Z\_B | X)=\int \int p(z\_A, z\_B | X) \1[z\_A < z\_B] dz\_A dz\_B
 \end{eqnarray}
 
-We can further decompose the joint posterior $p(z\_A, z\_B | X) = p(z\_A | X)p(z\_B | X)$ and after appropriate substitution find Equation~\ref{eq:AB-testing-int-risk} to be
+We can further decompose the joint posterior $p(z\_A, z\_B | X) = p(z\_A | X)p(z\_B | X)$ and after appropriate substitution find Equation \ref{eq:AB-testing-int-risk} to be
 
 \begin{eqnarray}
 \int \int \frac{1}{N(\alpha\_A')} \frac{1}{N(\alpha\_B')} z\_A^{\alpha\_A' -1} (1-z\_A)^{\beta\_A' - 1} z\_B^{\alpha\_B' -1} (1-z\_B)^{\beta\_B' - 1} dz\_A dz\_B
@@ -217,12 +222,14 @@ where $N(\alpha\_A')$ is the normalising constant for a Dirichlet distribution, 
 Although the A-B testing problem is now fully specified in analytical form, solving Equation~\ref{eq:AB-testing-int-risk} directly is not practical. Therefore, we solve the problem via a Monte Carlo approximation from the posterior.
 
 Let $z^{(i)} = (z\_A^{(i)}, z\_B^{(i)})$ denote the imputed latent states for $i = 1, 2, \dots, N$ with corresponding weights $w^{(i)} \in [0,1]$. For MCMC, the weights are simply $w^{(i)} = 1/N$ such that $\sum\_i w^{(i)} = 1$(weights in SMC are covered in later lectures). Then,
+
 \begin{eqnarray}
-\E[g(Z)|X] = \sum_i^N w^{(i)} g(z^{(i)})
+\E[g(Z)|X] = \sum\_i^N w^{(i)} g(z^{(i)})
 \end{eqnarray}
 where
+
 \begin{eqnarray}
-\sum_i^N W^{(i)} g(Z^{(i)}) \rightarrow \E[g(Z)|X].
+\sum\_i^N W^{(i)} g(Z^{(i)}) \rightarrow \E[g(Z)|X].
 \end{eqnarray}
 
 Note that we used upper case $W$ and $Z$ since this convergence is based on the random quantities.
