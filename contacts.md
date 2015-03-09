@@ -20,6 +20,7 @@ Course Information
 <address>
 **TA:** Sohrab Salehi <br/>
 **Email:** sohrab.salehi AT stat.ubc.ca
+**Office hours:** Fri 3:30pm, ESB 3125
 </address>
 
 **Piazza:** For questions and discussions, enroll [here](https://piazza.com/ubc.ca/winterterm22014/stat520)
