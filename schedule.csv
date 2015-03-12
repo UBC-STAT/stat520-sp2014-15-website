@@ -1,15 +1,16 @@
-<b>Meeting</b>,<b>Notes</b>,<b>Topics</b>,<b>Homework (out)</b>,<b>Homework (due)</b>
-Feb 23,,Decision-theoretic notation. Bayes estimator. Parametric families. Example: A/B testing.,,
-Feb 25,,Intrinsic loss functions. Examples of derivation of Bayes estimators. Doob's consistency theorem.,,
-Mar 2,Bring laptop in class*,"Rapid model development with probabilistic programming (i.e. languages such as BUGS, JAGS, Stan, etc)",Assignment 1,
-Mar 4,Bring laptop in class*,Hierarchies and mixtures,,
-Mar 9,,Model selection and averaging,,
-Mar 11,,,,Assignment 1
-Mar 16,,,,
-Mar 18,,,,
-Mar 23,,,,
-Mar 25,,,,
-Mar 30,,,,
-Apr 1,,,,
-Apr 6,University closed.,,,
-Apr 8,,,,
+<b>Meeting</b>,<b>Notes</b>,<b>Topics</b>,<b>Homework (out)</b>,<b>Homework (due)</b>,<b>Readings**</b>
+Feb 23,,Decision-theoretic notation. Bayes estimator. Parametric families. Example: A/B testing.,,,"1.1, 1.2"
+Feb 25,,Intrinsic loss functions. Examples of derivation of Bayes estimators. Doob's consistency theorem.,,,"2.1, 2.3, 2.5, 3.3"
+Mar 2,Bring laptop in class*,"Rapid model development with probabilistic programming (i.e. languages such as BUGS, JAGS, Stan, etc)",Assignment 1,,
+Mar 4,Bring laptop in class*,Hierarchies and mixtures,,,"10.1, 10.2"
+Mar 9,,Model selection and averaging,,,7.1
+Mar 11,Bring laptop in class*,"Model selection and averaging, continued",,,7.3
+Mar 13,,,,Assignment 1,
+Mar 16,,,,,
+Mar 18,,,,,
+Mar 23,,,,,
+Mar 25,,,,,
+Mar 30,,,,,
+Apr 1,,,,,
+Apr 6,University closed.,,,,
+Apr 8,,,,,

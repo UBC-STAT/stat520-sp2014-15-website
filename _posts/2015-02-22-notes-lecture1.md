@@ -4,6 +4,8 @@ title: "Lecture 1: Bayesian bootcamp"
 category: 'Lecture'
 ---
 
+<!-- TODO: change convention next time to data y, latent x to avoid clash with Z later on? -->
+
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;
 
 Based on: lecture 3 from last year.
