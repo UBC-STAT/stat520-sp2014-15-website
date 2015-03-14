@@ -13,6 +13,6 @@ Schedule (subject to change!)
 <br/>
 <br/>
 <br/>
-*If you do not have a laptop, you can alternatively form a team with someone with a laptop and work in team. If you have difficulties forming such a team, contact me.
+\*If you do not have a laptop, you can alternatively form a team with someone with a laptop and work in team. If you have difficulties forming such a team, contact me.
 <br/>
-**Unless noted otherwise, readings are in 'The Bayesian Choice', C.P. Robert.
+\*\*Unless noted otherwise, readings are in 'The Bayesian Choice', C.P. Robert.

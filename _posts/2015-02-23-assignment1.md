@@ -4,7 +4,7 @@ title: "Assignment 1"
 category: 'Homework'
 ---
 
-Assignment is due on Wednesday, March 11.
+Assignment is due on <s>Wednesday, March 11</s> Friday, March 13.
 
 ### Question 1
 
