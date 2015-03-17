@@ -11,7 +11,7 @@ We have touched on a first method to deal with prior hyper-parameters in this ex
 
 Since conjugacy leads us to consider families of priors indexed by a hyper-parameter $h$, this begs the question of how to pick $h$. Note that both $m\_h(x)$ and $p\_h(z | x)$ implicitly depend on $h$. Here are some guidelines for approaching this question:
 
-1. One can maximize $m\_h(x)$ over $h$, an approach called **empirical Bayes**. Note however that this does not fit the Bayesian framework (despite its name).
+1. One can maximize $m\_h(x)$ over $h$, an approach called **empirical Bayes**. Note however that this does not fit the Bayesian framework (despite its name). It estimate the hyperparameters from observations and the estimated prior is used in later analysis. 
 2. If the dataset is moderate to large, one can test a range of reasonable values for $h$ (a range obtained for example from discussion with a domain expert); if the action selected by the Bayes estimator is not affected (or not affected too much), one can side-step this issue and pick arbitrarily from the set of reasonable values.
 3. If it is an option, one can collect more data *from the same population*. Under regularity conditions, the effect of the prior can be decreased arbitrarily (this follows from the celebrated Bernstein-von Mises theorem, see van der Vaart, p.140).
 4. If we only have access to other datasets that are related (in the sense that they have the same type of latent space $\Zscr$), but potentially from different populations, we can still exploit them using a **hierarchical Bayesian** model, described next.
@@ -25,6 +25,17 @@ Hierarchical Bayesian models are conceptually simple:
 <img src="{{ site.url }}/images/hierarchical-lec3-fixedcap.png" alt="Drawing" style="width: 400px; float: center"/>
 
 One still has to pick a new prior $p^*$ on $H$, and to go again through steps 1-4 above, but this time with more data incorporated. Note that this process can be iterated as long as there is some form of known hierarchical structure in the data (as a concrete example of a type of dataset that has this property, see this non-parametric Bayesian approach to $n$-gram modelling: [Teh, 2006](http://acl.ldc.upenn.edu/P/P06/P06-1124.pdf)). More complicated techniques are needed when the hierarchical structure is unknown (we will talk about two of these techniques later in this course, namely hierarchical clustering and phylogenetics).
+
+A formal definition of a Hierachical Bayesian model can be found in : Robert, C. (2007). You can also find some interesting examples of Hierachical Bayesian
+models in Chapter 10 of Robert, C. (2007).  The assumption of exchangeability is often assumed in Hierarchical Bayesian Models. 
+
+**Definition:** A sequence of random variables $X\_1, X\_2,..., X\_n$ is exchangeable if for any permutation $\sigma$
+\\begin{eqnarray}
+\sigma(1, ..., n) \rightarrow (1, ..., n) \\\\
+(X\_1, ..., X\_n)\overset{d}{=} (X\_{\sigma(1)}, ..., X\_{\sigma(n)}).
+\\end{eqnarray}
+
+You can also find the difference amond finite exchangeability, infinite exchangeability and i.i.d at the wikipedia [entry](http://en.wikipedia.org/wiki/Bayesian_hierarchical_modeling)  and [entry](http://en.wikipedia.org/wiki/Exchangeable_random_variables) for details.
 
 The cost of taking the hierarchical Bayes route is that it generally requires resorting to Monte Carlo approximation, even if the initial model is conjugate.
 
@@ -84,7 +95,9 @@ p(\pi\_1, \dots, \pi\_K) \propto \prod\_{k=1}^{K} \pi\_k^{\alpha\_k - 1},
 \\end{eqnarray} 
 Note that the normalization of the Dirichlet distribution is analytically tractable using Gamma functions $\Gamma(\cdot)$ (a generalization of $n!$). See the wikipedia [entry](http://en.wikipedia.org/wiki/Dirichlet_distribution) for details.
 
+### Supplementary references
 
+**Robert, C. (2007) The Bayesian Choice.** Most relevant to this lecture is chapter 10.
 
 <!-- ### Second example: aspirin clinical trial
 
