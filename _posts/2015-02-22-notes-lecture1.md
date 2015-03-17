@@ -80,7 +80,7 @@ so that
 
 \begin{eqnarray}
 \delta^\*(X) =
-\begin{cases} A &\mbox{if } \P(Z\_A > Z\_B|X) > \frac{1}{2} \\
+\begin{cases} A &\mbox{if } \P(Z\_A > Z\_B|X) > \frac{1}{2} \\\\ \\\\
 B & \mbox{otherwise } \end{cases}
 \end{eqnarray}
 
