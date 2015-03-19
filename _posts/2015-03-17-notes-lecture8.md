@@ -33,6 +33,14 @@ In SMC, the input is the particle population from the previous generation, and i
 - Systematic resampling: same as stratified, but reuse the 100 uniform random numbers.
 - For more, see: [http://biblio.telecom-paristech.fr/cgi-bin/download.cgi?id=5755](http://biblio.telecom-paristech.fr/cgi-bin/download.cgi?id=5755).
 
+**Note:** only use resampling when it is really needed, i.e. when there are indeed many low weights particles in the current iteration. An effective strategy is to monitor the effective sampling size (ESS):
+
+\\begin{eqnarray}
+\frac{\left(\sum\_{i=1}^N w^i\right)^2}{\sum\_{i=1}^N (w^i)^2},
+\\end{eqnarray}
+
+which is maximized to $N$ if all weights are equals, and to $1$ if one particle has all the mass, and to resample when the ESS is smaller than $N/2$.
+
 #### Another view on SMC
 
 We can alternatively view SMC as an algorithm using importance sampling to first approximate $\pi\_1$, then to approximate $\pi\_2$, etc. Let us call these *intermediate approximations*, $\tilde \pi\_t$.
@@ -42,6 +50,7 @@ We can alternatively view SMC as an algorithm using importance sampling to first
 **Idea:** to construct the proposal, use $\tilde \pi\_{t-1}$ and a *transition* proposal $q(x\_t|x\_{t-1})$ (where we assume we can sample from $q$ and evaluate $q(x\_t|x\_{t-1})$ with the correct normalization.
 
 **Details:** See slides.
+
 
 
 ### Sequential Monte Carlo (SMC) on general spaces
@@ -70,32 +79,5 @@ We lift the assumptions that $F\_t = E\_1 \times E\_2 \times \dots \times E\_t$.
 - Marginalize $\tilde \pi\_t(x\_{1:t})$ over $x\_{1:t-1}$, where $\tilde \pi\_t \propto \tilde \gamma\_t$.
 - Since $\tilde \gamma\_t$ is now defined over a product space, we can use standard SMC on that auxiliary construction. Find the weight update of a standard SMC algorithm targeting $\tilde \gamma\_t$.
 
-<!--
-**Estimate of $Z$:**
 
 
-### Overview of some theoretical properties
-
-Here we look informally at the main theoretical properties enjoyed by SMC. We will come back for a more detailed treatment next lecture.
-
-#### (Algorithmic) consistency
-
-
-
-- why proofs are non-trivial: interaction and dependence
-
-#### Bias calculations
-
-- nb: less important
-
-#### Variance calculations
-
-#### Asymptotic normality
-
-### Generic sequences of target distributions
-
-- Annealing
-- Phylogenetic trees
-
-- auxiliary construction
--->
