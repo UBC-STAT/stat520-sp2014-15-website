@@ -10,47 +10,62 @@ We saw last time that a central goal in Bayesian model selection is to compute m
 
 ### Parenthesis: project idea
 
-Given the complexity of Bayesian model selection method when both continuous and discrete distributions are involved, it is generally a good idea to try to reduce the problem to a fully discrete case. How to do this? Analytic marginalization. Why? Opportunity for new models..
+Given the complexity of Bayesian model selection method when both continuous and discrete distributions are involved, it is generally a good idea to try to reduce the problem to a fully discrete case. This reduction can be completed through analytic marginalization. Why? Opportunity for new models. 
+
+The following graphical model depicts the probabilistic relationship we are interested in modelling. $K$ denotes the number of clusters in the population, $C$ is a clustering viewed as a set of sets (e.g. $C = \\{\\{1,3\\}, \\{2\\}, \\{4,5,6\\}\\}$ for the points $\\{1, 2, 3, 4, 5, 6\\}$), and $X$ is the vector of observations. This project's goal is to build a Markov Chain over the clustering only!
+
+<img src="{{ site.url }}/images/mixture-model-selection-conjugacy.png" alt="Drawing" style="width: 200px; float: center"/>
 
 ### Bayes factor, continued
 
 #### Implementation of model saturation
 
-Example on the Poisson process models from last time.
+We continue the example on the Poisson process models from last time. The goal is to select the model that best describes the data. The two models under consideration, Model 1 and Model 2, are given below. 
 
-#### Importance sampling and the harmonic estimator
+\\begin{align}
+ & \mbox{Model 1} &  & \mbox{Model 2} \\\\
+\alpha &\sim \mathrm{exp}(0.1) & \beta\_1, \beta\_2 &\sim \mathrm{exp}(0.1) \\\\
+x\_1|\alpha &\sim \mathrm{Poi}(\alpha) & x\_1|\beta\_1 &\sim  \mathrm{Poi}(\beta\_1) \\\\
+x\_2|\alpha &\sim \mathrm{Poi}(\alpha) & x\_2|\beta\_2 &\sim \mathrm{Poi}(\beta\_2)
+\\end{align}
 
-We now consider the problem of evaluating the marginal likelihood of a single model (instead of a ratio). We start by looking at the more general issue of approximating integral using importance sampling.
+An issue with the standard formulation of the space $Z$ is that the union (depicted in the picture below) cannot be represented via a non-trivial graphical model (a graphical model with more than one node). To form a graphical model consider the construction $Z'$. This allows us to write: 
 
-Let $\pi(z)$ denote a density of interest, and $f(z)$, any (integrable) function. our goal is to approximate $\int f(z) \pi(z) \ud z$.
+\\begin{align}
+\tilde{p}(\mu, z\_1, z\_2, x) &= p(\mu)p\_1(z\_1)p\_2(z\_2)
+\begin{cases}
+l\_1(x|z\_1) & \mu = 1 \\\\
+l\_2(x|z\_2) & \mu = 2 \\\\
+\end{cases}
+\\end{align}
 
-For example, we will take $f(z) = \ell(x | z)$, and $\pi(z)$ to be the prior here, since with this choice:
+<img src="{{ site.url }}/images/saturated-space.png" alt="Drawing" style="width: 700px; float: center"/>
+
+
+#### Importance sampling (IS)
+
+We now consider the problem of evaluating the marginal likelihood of a single model (instead of a ratio). We start by looking at the more general issue of approximating integrals with importance sampling. Let $\pi(z)$ denote a density of interest, and $f(z)$, any (integrable) function. Our goal is to approximate $\int f(z) \pi(z) \ud z$. For example, we will take $f(z) = \ell(x | z)$, and $\pi(z)$ to be the prior here, since with this choice we have the evidence of $x$:
 
 \\begin{eqnarray}
-m(x) &= \int f(z) \pi(z) \ud z.
+m(x) &= \int f(z) \pi(z) \ud z = \int \ell(x | z) \pi(z) \ud z.
 \\end{eqnarray}
 
-Suppose that $q(z)$ is a density with a support containing the support of $\pi(z)$. We assume that we can sample from $q$, or that we can sample from a Markov chain with stationary distribution $q$. $q$ is called the proposal distribution.
-
-Moreover, assume to start with that we can compute $q(z)$ and $\pi(z)$ for any $z$ (including the normalization). We will relax this assumption.
-
-Informally, the key idea behind importance sampling is: (1) to divide and multiply by $q(z)$:
-
+Suppose that $q(z)$ is a density whose support contains the support of $\pi(z)$. We assume that we can sample from $q$, or that we can sample from a Markov chain with stationary distribution $q$. $q$ is called the proposal distribution. Moreover, assume that we can compute $q(z)$ and $\pi(z)$ for any $z$ (including the normalization). We will relax this assumption later. Informally, the key idea behind importance sampling is: (1) to divide and multiply by $q(z)$:
 \\begin{eqnarray}
 \int \;\; f(z) \pi(z) \ud z = \int \;\; f(z) \pi(z) \frac{q(z)}{q(z)} \ud z,
 \\end{eqnarray}
 
-(2), to re-interpret the above equation as being an expectation with respect to $q$:
+(2) to re-interpret the above equation as an expectation with respect to $q$:
 
 \\begin{eqnarray}
 \int \;\; f(z) \pi(z) \frac{q(z)}{q(z)} \ud z &= \int f(z) w(z) q(z) \ud z \\\\
 &= \E[w(\tilde Z) f(\tilde Z)],
 \\end{eqnarray}
 
-where $\tilde Z \sim q$ and $w(z) = p(z)/q(z)$, and (3), use the law of large numbers (LLN) to justify the following approximation:
+where $\tilde Z \sim q$ and $w(z) = p(z)/q(z)$, and (3) use the law of large numbers (LLN) to justify the following approximation:
 
 \\begin{eqnarray}
-\E[w(\tilde Z)] \approx \frac{1}{N} \sum_{i = 1}^N f(\tilde Z^{(i)}) w(\tilde Z^{(i)}),
+\E[f(\tilde Z)w(\tilde Z)] \approx \frac{1}{N} \sum_{i = 1}^N f(\tilde Z^{(i)}) w(\tilde Z^{(i)}),
 \\end{eqnarray}
 
 where $\tilde Z^{(i)}$ could come from:
@@ -66,21 +81,17 @@ where $\tilde Z^{(i)}$ could come from:
 \frac{1}{N} \sum_{i = 1}^N \ell(x | z^{(i)}),
 \\end{eqnarray}
 
-however this does not work well in practice since the prior and posterior can be quite different. 
-
-To improve on this, we will need a second version of importance sampling that does not require having access to the normalized density $q$.
+however this does not work well in practice since the prior and posterior can be quite different. To improve on this, we will need a second version of importance sampling that does not require having access to the normalized density $q$.
 
 ---
 
-Let us now relax the assumption that the normalization of both $q$ and $p$ are known. Let $\pi(z) = \gamma(z)/C\_{\pi}$, where $\gamma(z)$ is easy to compute, but $C\_{\pi}$ is hard. This will take care of the normalization of $q$ at the same time.
-
-Now use the same idea as above (1-3) to approximate:
+Let us now relax the assumption that the normalization of both $q$ and $p$ are known. Let $\pi(z) = \gamma(z)/C\_{\pi}$, where $\gamma(z)$ is easy to compute, but $C\_{\pi}$ is hard. This will take care of the normalization of $q$ at the same time. Now use the same idea as above (1-3) to approximate:
 
 \\begin{eqnarray}
 C\_{\pi} = \int \gamma(z) \ud z,
 \\end{eqnarray}
 
-obtaining the approximation
+obtaining the approximation:
 
 \\begin{eqnarray}
 C\_{\pi} \approx \frac{1}{N} \sum\_{i = 1}^N w'(\tilde Z^{(i)}),
@@ -95,13 +106,13 @@ Finally, invoking Slutsky justifies the approximation:
 &= \sum\_{i = 1}^N f(\tilde Z^{(i)}) \bar w'(\tilde Z^{(i)}),
 \\end{eqnarray}
 
-where $\bar w$ denote the normalized weights.
-
-Note also that in this final equation, $q(z)$ also appears on both the numerator and denominator. Therefore, the approximation works with $w''(z) = \gamma(z) / u(z)$, where $q(z) = u(z) / C\_q$.
+where $\bar w$ denotes the normalized weights. Note also that in this final equation, $q(z)$ appears in both the numerator and denominator. Therefore, the approximation works with $w''(z) = \gamma(z) / u(z)$, where $q(z) = u(z) / C\_q$.
 
 ---
 
-**Back to the marginal likelihood:** Let us now take $u(z) = \ell(x|z) p(z)$, with again $f(z) = \ell(x|z)$. We get:
+#### Harmonic mean
+
+**Back to the marginal likelihood:** Let us now take $u(z) = \ell(x|z) p(z)$, with $f(z) = \ell(x|z)$ to get: 
 
 \\begin{eqnarray}
 \left( \frac{1}{N} \sum\_{i=1}^N (\ell(x|z^{(i)}))^{-1} \right)^{-1}
@@ -111,7 +122,7 @@ Unfortunately, the variance of this estimator is often infinite, resulting in ve
 
 **Pro:** easy to implement, does not require ratios.
 
-**Con:** does not work reliably in practice. Avoid using this outside of a baseline for  benchmarking other more sophisticated methods.
+**Con:** does not work reliably in practice. Avoid using this outside of a baseline for  benchmarking other more sophisticated methods. See this [blog entry](https://radfordneal.wordpress.com/2008/08/17/the-harmonic-mean-of-the-likelihood-worst-monte-carlo-method-ever/) by Radford Neal for an in depth example of the poor performance in estimating the marginal likelihood via the harmonic mean. 
 
 #### Bridge sampling
 
@@ -131,9 +142,14 @@ As in bridge sampling, we target the ratio $B\_{12}$, but we consider a continuu
 
 We start with the following standard identity, which holds under the assumption that we can swap a derivative and an integral (see for example Folland, Real Analysis):
 
-\\begin{eqnarray}\label{eq:thermo}
-\frac{\ud}{\ud t} \log C\_t = \E\_t\left[ \frac{\ud}{\ud t} \log \gamma\_t(Z) \right],
-\\end{eqnarray}
+\\begin{align}\label{eq:thermo}
+\frac{\ud}{\ud t} \log C\_t &= \frac{1}{C\_t} \frac{\ud}{\ud t}  C\_t \\\\
+&= \frac{1}{C\_t} \frac{\ud}{\ud t} \int \gamma\_t(z) \ud z \\\\
+&= \frac{1}{C\_t} \int \frac{\ud}{\ud t}  \gamma\_t(z) \ud z \\\\
+&= \int \frac{1}{\gamma\_t(z)} \frac{\ud}{\ud t}  \gamma\_t(z) \frac{\gamma\_t(z)}{C\_t} \ud z \\\\
+&= \int \frac{\ud}{\ud t} \log \gamma\_t(z) \pi\_t(z) \ud z \\\\
+&=  \E\_t\left[ \frac{\ud}{\ud t} \log \gamma\_t(Z) \right],
+\\end{align}
 
 where $\E\_t$ denotes expectation with respect to $Z \sim \pi\_t$. We define $U\_t(z) = \frac{\ud}{\ud t} \log \gamma\_t(z)$.
 
@@ -143,7 +159,24 @@ Thermodynamic integration consists in integrating both sides of Equation (\ref{e
 \log C\_1 - \log C\_0 = \int\_0^1 \E\_t[U\_t(Z)] \ud t.
 \\end{eqnarray}
 
-This can be approximated for example by numerical integration of the univariate integral, and Monte Carlo integration in the inner loop; or by using Monte Carlo on an auxiliary space including $t$ as a random variable.
+This can be approximated for example by numerical integration of the univariate integral, and Monte Carlo integration in the inner loop. See Lartillot, Nicolas, and Hervé Philippe for additional details. 
+
+---
+
+To showcase the performance gains of thermodynamic integration compared to the harmonic mean consider the example of [Neal](https://radfordneal.wordpress.com/2008/08/17/the-harmonic-mean-of-the-likelihood-worst-monte-carlo-method-ever/) mentioned earlier. In this example the model is very simple: 
+
+\\begin{align}
+\mu &\sim \mathrm{Normal}(0, s\_0^2) \\\\
+x &\sim \mathrm{Normal}(\mu, s_\1^2),
+\\end{align}  
+
+so that the marginal distribution and posterior can be calculated exactly. Neal shows that the harmonic mean estimate performs very poorly. However, thermodynamic integration performs very well (see the figure below). In this figure the estimated values of $\E\_t[U\_t(Z)]$ are plotted for different $t$ and the integral $\int\_0^1 \E\_t[U\_t(Z)] \ud t$ is performed via numerical methods (trapezoidal rule). 
+
+<img src="{{ site.url }}/images/TI_neal_example.png" alt="Drawing" style="width: 800px; float: center"/>
+
+The corresponding code is downloadable as a [Stan model]({{ site.url }}/files/model-choice/model.stan) and [R file]({{ site.url }}/files/model-choice/neal-harmonicMean-example.R). See Carpenter, Bob, et al for a detailed description of user-defined probability distributions in Stan. 
+
+---
 
 **Pro:** generally more accurate then the other methods.
 
@@ -222,3 +255,12 @@ We might cover some of these later in the course.
 - Frequentist validation.
 - Bayesian deviance.
 - Classical approximations (BIC).
+
+### References
+
+Neal, Radford. "The Harmonic Mean Of The Likelihood: Worst Monte Carlo Method Ever". Radford Neal's Blog 2008. Web. 19 Mar. 2015. <br>
+
+Carpenter, Bob, et al. "Stan: A Probabilistic Programming Language." <br> 
+
+Lartillot, Nicolas, and Hervé Philippe. "Computing Bayes factors using thermodynamic integration." Systematic biology 55.2 (2006): 195-207. <br>
+
