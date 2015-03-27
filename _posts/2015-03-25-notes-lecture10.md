@@ -86,11 +86,29 @@ This creates the following auxiliary latent space:
 
 ### RJMCMC
 
-RJMCMC works similarly to the second view of MH, with the difference that we pad a variable number of auxiliary variables in order to be able to build diffeomorphic mappings $\Psi$ (more specifically, mappings with non-vanishing Jacobians).
+RJMCMC works similarly to the second view of MH, with the difference that:
+
+- We pad a variable number of auxiliary variables in order to be able to build diffeomorphic mappings $\Psi$ (more specifically, mappings with non-vanishing Jacobians).
+- We many need more than one $\Psi\_j$, selected at random according to some probabilities $\rho\_{\cdot\to j}$.
 
 **Dimensionality matching:** a necessary conditions for the mapping to be diffeomorphic is that the input dimensionality of $\Psi$ should match the output dimensionality of $\Psi$.
 
-**So:** let us say that we want to "jump" from a model with $m\_1$ dimensions into one with $m\_2$ dimensions. What constraints do we have on the number $n\_1$ of auxiliary variables we add to the first model, and the number $n\_2$ we add to the second? 
+**Consequence:** let us say that we want to "jump" from a model with $m\_1$ dimensions into one with $m\_2$ dimensions. What constraints do we have on the number $n\_1$ of auxiliary variables we add to the first model, and the number $n\_2$ we add to the second? 
+
+**Notation:** 
+
+- $p(i)$ prior on model $i$
+- $\pi\_i$ posterior given model $i$
+- $i,i'$ old and proposed model indices
+- $x, x'$ old and proposed model parameters
+- $u\_i$: auxiliary variables before the move, input into $\Psi\_j$, with density $g\_i$
+- $u\_{i'}$: auxiliary variables after the move, output of $\Psi\_j$, with density $g\_{i'}$
+
+**Ratio for RJMCMC:**
+
+\\begin{eqnarray}
+\frac{p(i')\pi\_{i'}(x')}{p(i)\pi\_i(x)} \frac{\rho\_{i'\to i}}{\rho\_{i\to i'}} \frac{g\_{i'}(u\_{i'})}{g\_{i}(u\_{i})} \left| J(x', u\_2) \right|
+\\end{eqnarray}
 
 **Example:** textbook, page 365.
 
