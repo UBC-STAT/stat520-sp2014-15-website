@@ -23,9 +23,11 @@ In other words, we saw last week how to embed MCMC techniques inside SMC (i.e. a
 
 **Simplest PMCMC algorithm: PMMH**
 
-Suppose first we only care about getting a posterior over $\theta$. Let $p(\theta)$ denote its prior density. 
+![HMM](HMM_jpeg.jpg)
 
-Difficulty: $Z\_{\theta} = p(y | \theta)$, where $y$ is the data, is difficult to compute (recall that it would involve summing over all partitions $\part$ of the $n$ datapoints). 
+Suppose first we only care about getting a posterior over $\theta$ ($\sigma^2$ in the above example). Let $p(\theta)$ denote its prior density. 
+
+Difficulty: $Z\_{\theta} = p(y | \theta)$, where $y$ is the data, is difficult to compute (recall that it would involve summing over all partitions $\rho$ of the $n$ datapoints). 
 
 On the other hand, for any fixed value of $\theta$, we can get an approximation of $Z\_{\theta} = p(y | \theta)$ provided by running the SMC algorithm of the previous section and returning:
 
@@ -55,6 +57,8 @@ r = \frac{p(\theta')}{p(\theta)} \frac{Z'}{Z^{(j-1)}} \frac{q(\theta|\theta')}{q
    - Else, set $(\theta^{(j)}, Z^{(j)}) \gets (\theta^{(j-1)}, Z^{(j-1)})$
    
 **Analysis:** 
+
+![PMCMC](PMCMC.jpg)
 
 For any fixed number of particles $N$, there will be an error in the approximation $Z^{(j)}$ of $Z\_{\theta'}$. It follows that the MH ratio will be different than the idealized ratio, 
 \begin{eqnarray}
