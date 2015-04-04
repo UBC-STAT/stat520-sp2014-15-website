@@ -23,7 +23,7 @@ In other words, we saw last week how to embed MCMC techniques inside SMC (i.e. a
 
 **Simplest PMCMC algorithm: PMMH**
 
-![HMM](HMM_jpeg.jpg)
+<img src="{{ site.url }}/images/HMM_jpeg.jpg" alt="HMM" style="float: center"/>
 
 Suppose first we only care about getting a posterior over $\theta$ ($\sigma^2$ in the above example). Let $p(\theta)$ denote its prior density. 
 
@@ -58,7 +58,7 @@ r = \frac{p(\theta')}{p(\theta)} \frac{Z'}{Z^{(j-1)}} \frac{q(\theta|\theta')}{q
    
 **Analysis:** 
 
-![PMCMC](PMCMC.jpg)
+<img src="{{ site.url }}/images/PMCMC.jpg" alt="PMCMC" style="float: center"/>
 
 For any fixed number of particles $N$, there will be an error in the approximation $Z^{(j)}$ of $Z\_{\theta'}$. It follows that the MH ratio will be different than the idealized ratio, 
 \begin{eqnarray}
