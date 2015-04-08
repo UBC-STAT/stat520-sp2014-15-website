@@ -3,6 +3,9 @@ layout: post
 title: "Lecture 6: Model choice, continued"
 category: 'Lecture'
 ---
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
+
 
 ### Review
 
