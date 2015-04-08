@@ -3,7 +3,8 @@ layout: post
 title: "Lecture 4: Mixtures and hierarchies"
 category: 'Lecture'
 ---
-
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
 
 ### Prior choice and hierarchical models
 

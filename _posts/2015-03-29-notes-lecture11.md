@@ -3,6 +3,8 @@ layout: post
 title: "Lecture 11: From model selection to Bayesian non-parametrics"
 category: 'Lecture'
 ---
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
 
 #### Prerequisites
 

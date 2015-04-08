@@ -4,7 +4,8 @@ title: "Lecture 3: Hands-on Bayesian analysis"
 category: 'Lecture'
 ---
 
-
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
 
 
 

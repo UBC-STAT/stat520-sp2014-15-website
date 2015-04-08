@@ -3,6 +3,8 @@ layout: post
 title: "Lecture 10: Reversible jump MCMC"
 category: 'Lecture'
 ---
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
 
 ### Motivation for Reversible jump MCMC (RJMCMC)
 
