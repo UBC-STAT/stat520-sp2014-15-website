@@ -4,7 +4,6 @@ title: "Assignment 2"
 category: 'Homework'
 ---
 
-**Note:** Additional questions will be added shortly. An extension to the deadline will also be posted.
 
 ### Question 1
 
@@ -38,3 +37,13 @@ Consider a target distribution given by a product of $n$ normal distribution wit
 
 - Using the asymptotic results shown in class, derive an approximation of $\textrm{Var}(\hat Z\_n)/Z\_n^2$ for (1) and (2). 
 - How many particles are required to obtain a relative variance of $0.01$?
+
+
+### Question 3
+
+Write down the general form of the reversible jump acceptance ratio for the non-conjugate DP sampler covered in lecture 12 and 13.
+
+
+### Question 4 (optional)
+
+Complete the missing parts of the code covered in the tutorial. See ``Lab 1`` under the ``Activities`` tab.
