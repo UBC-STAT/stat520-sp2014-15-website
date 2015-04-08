@@ -3,6 +3,8 @@ layout: post
 title: "Lecture 7: Sequential Monte Carlo"
 category: 'Lecture'
 ---
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
 
 ### Review of importance sampling (IS)
 
