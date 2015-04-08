@@ -3,6 +3,9 @@ layout: post
 title: "Lecture 5: Model choice"
 category: 'Lecture'
 ---
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
+
 
 ### Examples
 
