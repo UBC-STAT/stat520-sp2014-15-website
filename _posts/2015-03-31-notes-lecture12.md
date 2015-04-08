@@ -3,6 +3,8 @@ layout: post
 title: "Lecture 12: DP, continued; non-conjugate inference"
 category: 'Lecture'
 ---
+Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
+Editor: TBA
 
 #### Sampling from a sampled measure
 
