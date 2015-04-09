@@ -4,7 +4,7 @@ title: "Lecture 8: SMC samplers and PMCMC"
 category: 'Lecture'
 ---
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
-Editor: TBA
+Editor: Creagh Briercliffe
 
 
 #### Sequential Monte Carlo (SMC)
