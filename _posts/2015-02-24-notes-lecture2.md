@@ -5,7 +5,7 @@ category: 'Lecture'
 ---
 
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
-Editor: TBA
+Editor: Neil Spencer
 
 Based on: lecture 3,5 from last year.
 
