@@ -4,7 +4,7 @@ title: "Lecture 6: Model choice, continued"
 category: 'Lecture'
 ---
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
-Editor: TBA
+Editor: [Sean Jewell](http://www.stat.ubc.ca/~sean.jewell/)
 
 
 ### Review
