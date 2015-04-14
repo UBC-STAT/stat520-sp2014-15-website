@@ -1,17 +1,20 @@
-"<b>Meeting</b>","<b>Notes</b>","<b>Topics</b>","<b>Homework (out)</b>","<b>Homework (due)</b>","<b>Readings**</b>"
-"Feb 23",,"Decision-theoretic notation. Bayes estimator. Parametric families. Example: A/B testing.",,,"1.1, 1.2"
-"Feb 25",,"Intrinsic loss functions. Examples of derivation of Bayes estimators. Doob's consistency theorem.",,,"2.1, 2.3, 2.5, 3.3"
-"Mar 2","Bring laptop in class*","Rapid model development with probabilistic programming (i.e. languages such as BUGS, JAGS, Stan, etc)","Assignment 1",,
-"Mar 4","Bring laptop in class*","Hierarchies and mixtures",,,"10.1, 10.2"
-"Mar 9",,"Model selection and averaging",,,7.1
-"Mar 11","Bring laptop in class*","Model selection and averaging, continued",,,7.3
-"Mar 13",,,,"Assignment 1",
-"Mar 16",,"Nested sampling, IS, SIS","Project proposal",,"6.1, 6.2"
-"Mar 18",,"SMC, SMC samplers",,,
-"Mar 23",,"Particle MCMC",,"Project proposal",
-"Mar 25",,"Reversible jump MCMC","Assignment 2",,6.3
-"Mar 30",,"Reversible jump MCMC vs. Bayesian non-parametric methods",,,
-"Apr 1",,"Bayesian non-parametrics continued",,,
-"Apr 6","University closed.",,,,
-"Apr 8",,,"Assignment 3 (optional)",,
-"Apr 13",,,,"Assignment 2",
+<b>Meeting</b>,<b>Notes</b>,<b>Topics</b>,<b>Homework (out)</b>,<b>Homework (due)</b>,<b>Readings**</b>
+Feb 23,,Decision-theoretic notation. Bayes estimator. Parametric families. Example: A/B testing.,,,"1.1, 1.2"
+Feb 25,,Intrinsic loss functions. Examples of derivation of Bayes estimators. Doob's consistency theorem.,,,"2.1, 2.3, 2.5, 3.3"
+Mar 2,Bring laptop in class*,"Rapid model development with probabilistic programming (i.e. languages such as BUGS, JAGS, Stan, etc). Example: challenger data.",Assignment 1,,
+Mar 4,Bring laptop in class*,"Hierarchies and mixtures. Examples: launchers data, geyser data.",,,"10.1, 10.2"
+Mar 9,,Model selection and averaging. Example: rabbit holes.,,,7.1
+Mar 11,Bring laptop in class*,"Model selection and averaging, continued.",,,7.3
+Mar 13,,,,Assignment 1,
+Mar 16,,"Nested sampling, IS, SIS. Example: HMMs.",Project proposal,,"6.1, 6.2"
+Mar 18,,"SMC, SMC samplers. Some theoretical properties. Example:tree inference.",,,
+Mar 23,,Particle MCMC. Proof of correctness. Particle genealogies.,,Project proposal,
+Mar 25,,Reversible jump MCMC. Example: multiplicative proposals.,Assignment 2,,6.3
+Mar 30,,Reversible jump MCMC vs. Bayesian non-parametric methods. ,,,
+Apr 1,,Bayesian non-parametrics continued.,,,
+Apr 6,University closed.,,,,
+Apr 8,Lab 1,"Sampling in non-conjugate BNP models, hierarchical models and the sequence memoizer. Example: language modelling.",Assignment 3 (optional),,
+Apr 13,Lab 2,"Second lab: 5pm, computer room on main floor of ESB",,,
+Apr 15,,,,Assignment 2,
+Apr 20,,,,Assignment 3 (optional),
+Apr 25,,,,Project deadline,
