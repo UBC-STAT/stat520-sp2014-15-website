@@ -4,7 +4,7 @@ title: "Lecture 9: Particle MCMC and some theory"
 category: 'Lecture'
 ---
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
-Editor: TBA
+Editor: Json Hartford
 
 ### Particle MCMC (PMCMC)
 

@@ -3,7 +3,7 @@ layout: post
 title: "Lecture 13: BNP, continued"
 category: 'Lecture'
 ---
-Instructor: Alexandre Bouchard-Côté
+Instructor: Alexandre Bouchard-Côté  
 Editor: TBA
 
 ### Hierarchical DP (HDP)
