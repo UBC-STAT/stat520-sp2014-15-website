@@ -4,7 +4,7 @@ title: "Lecture 11: From model selection to Bayesian non-parametrics"
 category: 'Lecture'
 ---
 Instructor: Alexandre Bouchard-C&ocirc;t&eacute;   
-Editor: TBA
+Editor: Bo Chang
 
 #### Prerequisites
 
@@ -71,6 +71,8 @@ G(A) = \sum\_{k=1}^{\infty} \pi\_k \1(\theta\_k \in A),
 
 This is the *Stick Breaking representation*, and is not quite an algorithm as written above (it never terminates), but this can be fixed by lazy computing.
 
+It can be shown that the number of components typically used to model $n$ data items is approximately $O(\alpha \log n)$. 
+
 **Other examples:**
 
 - Pitman-Yor. Make the parameters of the beta depend on the level (at level $i$, use $(1-d, \alpha + id)$, where $d$ is a tuning parameter $d \in [0, 1)$.
@@ -79,3 +81,5 @@ This is the *Stick Breaking representation*, and is not quite an algorithm as wr
 
 Key motivation for these extensions: DPs can give us $P\_n \sim \log(n)$. PY gives us $P\_n \sim n^d$. PY also yields a power law distribution on the number of customers per table (i.e. the number $m$ of customers is proportional to $m^{-(1+d)}$ (truncated to avoid the asymptote at zero).
 
+### Supplementary references and notes
+**Dirichlet Processes. Y.W. Teh. Encyclopedia of Machine Learning, 2010. Springer. **
